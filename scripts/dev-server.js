@@ -16,7 +16,6 @@ const KWM = require('koa-webpack-middleware')
 const proxyMiddleware = require('http-proxy-middleware')
 const chafMiddleware = require('connect-history-api-fallback')
 const webpackConfig = require('./webpack.dev.conf')
-const registerApi = require('../src/server/register').default
 
 process.env.isBuild = false
 
@@ -69,12 +68,34 @@ app.use(hotMiddleware)
 app.use(koaMount('/static', koaStatic(config.paths.static)))
 
 // register server api
-registerApi(app)
+if (config.dev.registerApi) {
+  const registerApi = require('../src/server/register').default
+  const watcher = require('chokidar').watch(config.paths.server)
+
+  registerApi(app)
+
+  watcher.on('ready', () => {
+    watcher.on('all', (err, file) => {
+      
+      if (!config.dev.hotApiRegex.test(file)) {
+        console.log('> Rebooting server... ')
+        // TBD
+      } else {
+        console.log('> Reloading hot modules of server. ')
+        Object.keys(require.cache).forEach((id) => {
+          if (config.dev.hotApiRegex.test(id)) delete require.cache[id]
+        })
+        console.log('> Hot modules of server are reloaded. ')
+      }
+    })
+  })
+}
+
 
 const uri = 'http://localhost:' + port
 
 devMiddleware.waitUntilValid(() => {
-  console.log('> Listening at ' + uri + '\n')
+  console.log(`> Listening at ${uri} \n`)
 })
 
 module.exports = app.listen(port, err => {
@@ -83,7 +104,7 @@ module.exports = app.listen(port, err => {
     return
   }
 
-  // when env is testing, don't need open it
+  // automatically open default browser
   if (autoOpenBrowser) {
     opn(uri)
   }

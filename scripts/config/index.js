@@ -15,12 +15,14 @@ module.exports = {
     port: 2333,
     autoOpenBrowser: true,
     registerApi: true,
+    hotApiRegex: /[\/\\](routes|utils|middlewares)[\/\\]/,
     proxyTable: proxyTable,
     cssSourceMap: false
   },
   paths: {
     public: '/',
     output: distPath,
+    server: path.resolve(srcPath, 'server'),
     static: path.resolve(srcPath, 'static')
   },
   staticAssets: {

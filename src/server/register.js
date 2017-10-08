@@ -5,7 +5,7 @@ import koaSession from 'koa-session'
 import log4js from 'log4js'
 import sessionconf from './config/session'
 import { enrichResponse, enrichSession } from './middlewares/enrichment'
-import routers from './routers'
+import router from './routes'
 import logconf from './config/log'
 // import koaCors from 'koa2-cors'
 
@@ -40,9 +40,11 @@ export default app => {
     }
   })
 
-  routers.forEach(router => {
-    app.use(router.routes(), router.allowedMethods())
-  })
+  app.use(router)
+
+  // routers.forEach(router => {
+  //   app.use(router.routes(), router.allowedMethods())
+  // })
 
   app.use(async ctx => {
     if (!ctx.headerSent && app.env !== 'development') {

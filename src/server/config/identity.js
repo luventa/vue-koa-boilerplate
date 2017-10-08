@@ -1,4 +1,4 @@
-export const prots = {
+export const ports = {
   development: 2333,
   testing: 8008,
   production: 8088
