@@ -4,6 +4,7 @@ require('babel-core/register')({
   presets: [ 'env', 'stage-0' ]
 })
 
+// require dev modules
 const Koa = require('koa')
 const koaMount = require('koa-mount')
 const koaStatic = require('koa-static')
@@ -17,11 +18,11 @@ const proxyMiddleware = require('http-proxy-middleware')
 const chafMiddleware = require('connect-history-api-fallback')
 const webpackConfig = require('./webpack.dev.conf')
 
+// set process env
 process.env.isBuild = false
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
-const autoOpenBrowser = Boolean(config.dev.autoOpenBrowser)
 const proxyTable = config.dev.proxyTable
 
 // init koa server
@@ -29,7 +30,7 @@ const app = new Koa()
 const compiler = webpack(webpackConfig)
 
 const devMiddleware = KWM.devMiddleware(compiler, {
-  noInfo: false,
+  noInfo: config.dev.noInfo,
   watchOptions: {
     aggregateTimeout: 300,
     poll: false
@@ -69,6 +70,7 @@ app.use(koaMount('/static', koaStatic(config.paths.static)))
 
 // register server api
 if (config.dev.registerApi) {
+  console.log('> Registering server Api ')
   const registerApi = require('../src/server/register').default
   const watcher = require('chokidar').watch(config.paths.server)
 
@@ -91,7 +93,7 @@ if (config.dev.registerApi) {
   })
 }
 
-
+// start dev server
 const uri = 'http://localhost:' + port
 
 devMiddleware.waitUntilValid(() => {
@@ -105,7 +107,7 @@ module.exports = app.listen(port, err => {
   }
 
   // automatically open default browser
-  if (autoOpenBrowser) {
+  if (config.dev.autoOpenBrowser) {
     opn(uri)
   }
 })

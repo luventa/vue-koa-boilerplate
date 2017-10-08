@@ -13,6 +13,7 @@ module.exports = {
   },
   dev: {
     port: 2333,
+    noInfo: true,
     autoOpenBrowser: true,
     registerApi: true,
     hotApiRegex: /[\/\\](routes|utils|middlewares)[\/\\]/,
