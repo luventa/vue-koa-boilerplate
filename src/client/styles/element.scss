@@ -1,0 +1,38 @@
+.el-form-item.is-required .el-form-item__label:before {
+  content: none;
+}
+
+.el-input-group__append {
+  border-color: #50BFFF;
+
+  > .el-button {
+    border-radius: 0;
+
+    &.el-button--primary {
+      background: #50BFFF;
+      color: #FFFFFF;
+
+      &.is-disabled {
+        font-size: 0.75rem;
+        background: #E2E9F1;
+        color: #20a0ff;
+      }
+    }
+
+    &.el-button--warning {
+      background: #E2E9F1;
+      border-color: #E2E9F1;
+      color: #20a0ff;
+    }
+  } 
+}
+
+.el-input {
+  > .el-input__icon.el-icon-check {
+    color: #81da81;
+  }
+}
+
+.el-form-item__label {
+  color: #5E6D82;
+}

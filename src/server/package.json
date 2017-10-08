@@ -1,0 +1,46 @@
+{
+  "name": "vue_koa_iso_server",
+  "version": "1.0.0",
+  "description": "Server frame for Vue&Koa iso project",
+  "author": "luventa <luventa@outlook.com>",
+  "private": true,
+  "scripts": {
+    "dev": "hotnode index.js",
+    "uat": "node index.js --uat",
+    "prod": "node index.js --prod"
+  },
+  "dependencies": {
+    "babel-core": "^6.25.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "koa": "^2.3.0",
+    "koa-body": "^2.3.0",
+    "koa-router": "^7.2.1",
+    "koa-session": "^5.4.0",
+    "koa-static": "^4.0.1",
+    "koa-views": "^6.0.2",
+    "koa2-connect": "^1.0.2",
+    "koa2-cors": "^2.0.3",
+    "lodash": "^4.17.4",
+    "log4js": "^1.1.1",
+    "mathjs": "^3.15.0",
+    "moment": "^2.18.1",
+    "mysql2": "^1.3.6",
+    "mz": "^2.6.0",
+    "node-fetch": "^1.7.1",
+    "node-xlsx": "^0.10.0",
+    "sequelize": "^4.4.2",
+    "svg-captcha": "^1.3.9",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "hotnode": "^0.0.8",
+    "mysql": "^2.14.1",
+    "sequelize-auto": "^0.4.28"
+  },
+  "engines": {
+    "node": ">= 7.6.0",
+    "npm": ">= 3.0.0"
+  }
+}

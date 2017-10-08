@@ -1,0 +1,10 @@
+@import "./variables.scss";
+
+.container {
+  > section {
+    min-height: 100vh;
+    max-width: $content;
+    margin: 0 auto;
+    padding: 2rem 1.2rem;
+  }
+}

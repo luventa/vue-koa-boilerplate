@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "uri": "mysql://YOUR DB USER:YOUR PASSWORD@YOUR DB IP:3306/YOUR DB"
+  },
+  "pool": {
+    "max": 10,
+    "min": 0,
+    "idle": 10000
+  }
+}
