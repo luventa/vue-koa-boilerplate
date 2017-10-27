@@ -1,13 +1,13 @@
+const _ = require('lodash')
 const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
 const utils = require('./utils')
 
 const env = config.env[process.env.NODE_ENV]
-const srcRoots = [
-  path.resolve(__dirname, 'src/client'),
-  path.resolve(__dirname, 'src/server')
-]
+const srcRoots = process.env.isBuild
+  ? config.paths.client
+  : [ config.paths.client, config.paths.server ]
 
 module.exports = {
   entry: {

@@ -2,11 +2,11 @@ const path = require('path')
 const proxyTable = require('./proxy.conf')
 const projectName = 'myproject'
 const srcPath = path.resolve('src')
-const distPath = path.resolve(__dirname, `dist/${projectName}`)
+const distPath = path.resolve(`dist/${projectName}`)
 
 module.exports = {
   build: {
-    index: path.resolve(distPath, `index.html`),
+    index: path.resolve(distPath, 'index.html'),
     productionSourceMap: true,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css']
@@ -23,26 +23,15 @@ module.exports = {
   paths: {
     public: '/',
     output: distPath,
+    assetSub: 'assets',
+    client: path.resolve(srcPath, 'client'),
     server: path.resolve(srcPath, 'server'),
     static: path.resolve(srcPath, 'static')
   },
-  staticAssets: {
-    prefix: '/static',
-    directory: path.resolve(__dirname, 'src/static')
-  },
-  assets: {
-    subDirectory: 'assets',
-    dist: path.resolve(__dirname, '../../dist/client')
-  },
-  client: {
-    distPath: path.resolve(__dirname, '../../dist/client'),
-    staticDist: path.resolve(__dirname, '../../dist/client/static'),
-    publicPath: '/'
-  },
-  server: {
-    directory: path.resolve(__dirname, '../../server'),
-    distPath: path.resolve(__dirname, '../../dist/server'),
-    dest: path.resolve(__dirname, '../../dist')
+  dists: {
+    publicPath: '/',
+    client: path.resolve(distPath, 'client'),
+    server: path.resolve(distPath, 'server'),
   },
   env: {
     development: require('./dev.env'),

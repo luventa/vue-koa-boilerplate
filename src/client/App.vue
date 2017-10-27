@@ -8,6 +8,7 @@
 
 <script>
 import { AppHeader, AppMain, AppFooter } from '@comp/layout'
+
 export default {
   name: 'app',
 
@@ -20,5 +21,12 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./styles/app.scss";
+@import "./style/index.scss";
+
+#app {
+  background-color: $white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 </style>

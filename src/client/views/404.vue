@@ -10,5 +10,4 @@
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/viewbase.scss";
 </style>

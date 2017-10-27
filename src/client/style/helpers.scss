@@ -1,0 +1,105 @@
+/* Basic */
+
+.is-clearfix {
+  @include clearfix
+}
+
+.is-pulled-left {
+  float: left;
+}
+
+.is-pulled-right {
+  float: right;
+}
+
+/* Overflow */
+
+.is-clipped {
+  overflow: hidden !important;
+}
+
+// Overlay
+
+.is-overlay {
+  @include overlay
+}
+
+/* Text Align */
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Visibility */
+
+.is-hidden {
+  display: none !important;
+}
+
+.is-hidden-mobile {
+  @include mobile {
+    display: none !important;
+  }
+}
+
+.is-hidden-tablet {
+  @include tablet {
+    display: none !important;
+  }
+}
+
+.is-hidden-tablet-only {
+  @include tablet-only {
+    display: none !important;
+  }
+}
+
+.is-hidden-touch {
+  @include touch {
+    display: none !important;
+  }
+}
+
+.is-hidden-desktop {
+  @include desktop {
+    display: none !important;
+  }
+}
+
+.is-hidden-desktop-only {
+  @include desktop-only {
+    display: none !important;
+  }
+}
+
+.is-hidden-widescreen {
+  @include widescreen {
+    display: none !important;
+  }
+}
+
+/* Miscellaneous */
+
+.is-disabled {
+  pointer-events: none
+}
+
+.is-marginless {
+  margin: 0 !important
+}
+
+.is-paddingless {
+  padding: 0 !important
+}
+
+.is-unselectable {
+  @include unselectable
+}

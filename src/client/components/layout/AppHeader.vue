@@ -1,15 +1,13 @@
 <template>
-  <header>
-    <nav>
-      <section>
-        <span>这是页头</span>
-        <ul>
-          <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/count">Count</router-link></li>
-        </ul>
-      </section>
-    </nav>
-  </header>
+  <nav>
+    <div>
+      <router-link to="/">
+        <img src="/static/img/logo.png" alt="Vue Koa" />
+      </router-link>
+      <router-link to="/">Home</router-link>
+      <router-link to="/count">Count</router-link>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -24,9 +22,28 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-header {
-  height: 5rem;
+nav {
+  min-height: 3.25rem;
   background-color: white;
-  border-bottom: 1px solid gray;
+  position: relative;
+  box-shadow: 0 1px 1px 1px rgba(0, 0, 0, .1);
+  display: flex;
+
+  > div {
+    display: flex;
+
+    > a {
+      line-height: 1.5;
+      padding: 0.5rem 1rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      > img {
+        max-height: 2.75rem;
+        max-width: 100%;
+      }
+    }
+  }
 }
 </style>

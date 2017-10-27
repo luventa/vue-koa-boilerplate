@@ -1,0 +1,24 @@
+.container {
+  min-height: 100vh;
+  margin: 0.75rem auto;
+  position: relative;
+  
+  @include desktop {
+    
+    max-width: $desktop - 40px; // 960px
+  }
+
+  @include widescreen {
+    max-width: $widescreen - 40px; //1152px
+  }
+}
+
+.footer {
+  background-color: $grey;
+  padding: 3rem 1.5rem;
+}
+
+.view {
+  background-color: $white;
+  padding: 3rem 1.5rem;
+}

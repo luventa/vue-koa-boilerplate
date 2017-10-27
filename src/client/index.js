@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { sync } from 'vuex-router-sync'
-import { cookie } from 'js-cookie'
+// import { cookie } from 'js-cookie'
 import App from './App'
 import router from './router'
 import store from './store'

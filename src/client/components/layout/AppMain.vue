@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article class="container">
     <transition name="fade" mode="out-in">
       <router-view></router-view>
     </transition>
@@ -19,8 +19,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.article {
-  padding-top: 2rem;
-  padding-bottom: 4rem;
-}
 </style>

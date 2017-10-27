@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -8,8 +9,15 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const config = require('./config')
 const utils = require('./utils')
 const env = process.argv.slice(2) == '--debug' ? config.env.test : config.env.prod
+const nodeModules = {}
+fs.readdirSync('node_modules').filter((x) => {
+  return ['.bin'].indexOf(x) === -1
+}).forEach((mod) => {
+  nodeModules[mod] = 'commonjs ' + mod
+})
 
-const webpackConfig = merge(baseWebpackConfig, {
+const clientWebpackConfig = merge(baseWebpackConfig, {
+  name: 'client',
   entry: {
     vendor: [
       'es6-promise',
@@ -23,8 +31,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     })
   },
   output: {
-    path: config.client.distPath,
-    publicPath: config.client.publicPath,
+    path: config.dists.client,
+    publicPath: config.dists.publicPath,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
@@ -57,11 +65,11 @@ const webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      title: 'Vue Koa Frame',
+      title: 'Vue Koa Boilerplate',
       filename: 'index.html',
-      template: 'index.html',
+      template: 'src/static/index.html',
       inject: true,
-      favicon: 'client/assets/favicon.ico',
+      favicon: 'src/static/favicon.ico',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
@@ -98,7 +106,7 @@ const webpackConfig = merge(baseWebpackConfig, {
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
-  webpackConfig.plugins.push(
+  clientWebpackConfig.plugins.push(
     new CompressionWebpackPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -113,4 +121,47 @@ if (config.build.productionGzip) {
   )
 }
 
-module.exports = webpackConfig
+const serverWebpackConfig = {
+  name: 'server',
+  devtool: 'cheap-source-map',
+  entry: [ './src/server/index.js' ],
+  output: {
+    path: config.dists.server,
+    filename: '[name].js',
+    publicPath: '/build/'
+  },
+  target: 'node',
+  node: {
+    __dirname: true,
+    __filename: true
+  },
+  externals: nodeModules,
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: config.paths.server,
+        exclude: /node_modules/
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.js', '.json']
+  },
+  plugins: [
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    })
+  ]
+}
+
+module.exports = [ clientWebpackConfig, serverWebpackConfig ]
