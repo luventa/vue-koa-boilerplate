@@ -17,17 +17,8 @@ const spinner = ora('building for production...')
 spinner.start()
 
 // copy static assets
-// rm('-rf', config.client.distPath)
 mkdir('-p', config.paths.output)
 cp('-R', config.paths.static, config.paths.output)
-// cp('-R', 'robots.txt', config.client.distPath)
-
-// // pack server to dist
-// if (process.argv.slice(2) == '--package') {
-//   rm('-rf', config.server.distPath)
-//   mkdir('-p', config.server.distPath)
-//   cp('-R', config.server.directory, config.server.dest)
-// }
 
 const compiler = webpack(webpackConfig)
 const ProgressPlugin = require('webpack/lib/ProgressPlugin')
