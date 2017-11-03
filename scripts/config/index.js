@@ -16,7 +16,7 @@ module.exports = {
     noInfo: true,
     autoOpenBrowser: false,
     registerApi: true,
-    hotApiRegex: /[\/\\](routes|utils|middlewares)[\/\\]/,
+    hotApiRegex: /[\/\\](route|util|middleware)[\/\\]/,
     proxyTable: proxyTable,
     cssSourceMap: false
   },

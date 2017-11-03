@@ -8,13 +8,6 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const config = require('./config')
 const utils = require('./utils')
-const nodeModules = _externals()
-
-// fs.readdirSync('node_modules').filter((x) => {
-//   return ['.bin'].indexOf(x) === -1
-// }).forEach((mod) => {
-//   nodeModules[mod] = 'commonjs ' + mod
-// })
 
 const clientWebpackConfig = merge(baseWebpackConfig.client, {
   entry: {
@@ -116,28 +109,13 @@ if (config.build.productionGzip) {
   )
 }
 
-const serverWebpackConfig = merge(baseWebpackConfig.client, {
+const serverWebpackConfig = merge(baseWebpackConfig.server, {
+  devtool: false,
   output: {
     path: config.dists.server,
     filename: '[name].js',
-    publicPath: '/build/'
-  },
-  // externals: nodeModules,
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false }
-    })
-  ]
-})
-
-function _externals() {
-  let manifest = require('../package.json')
-  let dependencies = manifest.dependencies
-  let externals = {}
-  for (let dep in dependencies) {
-    externals[dep] = 'commonjs ' + dep
+    chunkFilename:'[chunkhash].js'
   }
-  return externals
-}
+})
 
 module.exports = [ clientWebpackConfig, serverWebpackConfig ]

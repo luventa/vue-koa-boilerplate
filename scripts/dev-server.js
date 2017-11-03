@@ -1,8 +1,6 @@
 require('./check-versions')()
 require('babel-polyfill')
-require('babel-core/register')({
-  presets: [ 'env', 'stage-0' ]
-})
+require('babel-core/register')()
 
 // require dev modules
 const Koa = require('koa')

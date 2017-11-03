@@ -2,6 +2,16 @@ const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
 const utils = require('./utils')
+const externals = _externals()
+
+function _externals() {
+  let dependencies =  require('../src/server/package.json').dependencies
+  let externals = {}
+  for (let dep in dependencies) {
+    externals[dep] = 'commonjs ' + dep
+  }
+  return externals
+}
 
 const clientWebpackConfig = {
   name: 'client',
@@ -90,33 +100,34 @@ const serverWebpackConfig = {
   },
   target: 'node',
   node: {
-    __dirname: true,
-    __filename: true
+    __filename: false,
+    __dirname: false
   },
-  // module: {
-  //   loaders: [
-  //     {
-  //       test: /\.(js)$/,
-  //       loader: 'eslint-loader',
-  //       include: config.paths.server,
-  //       exclude: /node_modules/,
-  //       enforce: 'pre',
-  //       options: {
-  //         formatter: require('eslint-friendly-formatter')
-  //       }
-  //     },
-  //     {
-  //       test: /\.js$/,
-  //       loader: 'babel-loader',
-  //       include: config.paths.server,
-  //       exclude: /node_modules/
-  //     },
-  //     {
-  //       test: /\.json$/,
-  //       loader: 'json-loader'
-  //     }
-  //   ]
-  // },
+  externals: externals,
+  module: {
+    loaders: [
+      {
+        test: /\.(js)$/,
+        loader: 'eslint-loader',
+        include: config.paths.server,
+        exclude: /node_modules/,
+        enforce: 'pre',
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: config.paths.server,
+        exclude: /node_modules/
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }
+    ]
+  },
   resolve: {
     extensions: ['.js', '.json']
   }

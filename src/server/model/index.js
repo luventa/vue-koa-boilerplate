@@ -1,4 +1,4 @@
-import { fs, path, log4js } from '../utils'
+import { fs, path, log4js } from '../util'
 import Sequelize from 'sequelize'
 import dbconf from '../confg/db.json'
 

@@ -5,6 +5,7 @@
   "author": "luventa <luventa@outlook.com>",
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/dev-server.js",
+    "test": "cross-env NODE_ENV=testing node dist/myproject/server/main.js",
     "build": "rimraf dist && cross-env NODE_ENV=testing node scripts/build.js",
     "release": "rimraf dist && cross-env NODE_ENV=production node scripts/build.js",
     "analyze": "node scripts/analyze.js",
@@ -16,6 +17,7 @@
     "cross-env": "^5.0.5",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.11.1",
+    "es6-promise": "^4.1.1",
     "js-cookie": "^2.1.4",
     "koa": "^2.3.0",
     "koa-body": "^2.4.0",
@@ -29,6 +31,7 @@
     "log4js": "^2.3.4",
     "moment": "^2.18.1",
     "mz": "^2.7.0",
+    "node-fetch": "^1.7.3",
     "vue": "^2.4.4",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.1",

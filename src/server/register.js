@@ -6,19 +6,26 @@ import koaSession from 'koa-session'
 import { configure, getLogger } from 'log4js'
 import logconf from './config/log'
 import sessionconf from './config/session'
-import { enrichResponse, enrichSession } from './middlewares/enrichment'
-import router from './routes'
+import { enrichResponse, enrichSession } from './enrich'
+import { dynamicRoute, initRoutes} from './route'
 // import koaCors from 'koa2-cors'
 
-const webroot = path.join(__dirname, '../../client')
+const webroot = path.join(__dirname, '../client')
 const staticroot = path.join(__dirname, '../static')
 
 // configure log4js
 configure(logconf)
 const logger = getLogger('server')
 
+logger.info(webroot)
+logger.info(staticroot)
+
 export default app => {
   logger.debug('Registering middlewares for app...')
+
+  app.env = process.env.NODE_ENV || app.env
+
+  logger.debug('Setting app env to', app.env)
 
   app.keys = ['this is a secret key hehe']
   app.use(koaSession(sessionconf, app))
@@ -46,9 +53,10 @@ export default app => {
     }
   })
 
-  app.use(router)
+  app.env === 'development' ? app.use(dynamicRoute) : initRoutes(app)
 
   app.use(async ctx => {
+    logger.info('herererere')
     if (!ctx.headerSent && app.env !== 'development') {
       await ctx.render('index.html')
     }

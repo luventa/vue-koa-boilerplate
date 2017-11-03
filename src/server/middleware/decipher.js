@@ -1,5 +1,5 @@
-import { _, getLogger } from '../utils'
-import { decrypt } from '../utils/helper'
+import { _, getLogger } from '../util'
+import { decrypt } from '../util/helper'
 
 const logger = getLogger('decipher')
 

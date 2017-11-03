@@ -1,14 +1,11 @@
-import authconf from '../config/auth'
+import authconf from './config/auth'
 import { getLogger } from 'log4js'
 
 const logger = getLogger('middlewares')
 
 /* Common response code
 ** Will be set to response as rtnCode */
-const resCode = {
-  success: 1,
-  fail: -1
-}
+const resCode = { success: 1, fail: -1 }
 
 const commonRes = (ctx, status) => {
   return async (msg, obj = {}) => {
