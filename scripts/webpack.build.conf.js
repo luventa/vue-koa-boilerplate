@@ -118,4 +118,9 @@ const serverWebpackConfig = merge(baseWebpackConfig.server, {
   }
 })
 
+if (process.argv.slice(2) == '--analyze') {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  clientWebpackConfig.plugins.push(new BundleAnalyzerPlugin())
+}
+
 module.exports = [ clientWebpackConfig, serverWebpackConfig ]

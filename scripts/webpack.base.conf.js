@@ -31,7 +31,8 @@ const clientWebpackConfig = {
     // http://vuejs.github.io/vue-loader/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': config.env[process.env.NODE_ENV]
-    })
+    }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/,/en|zh/)
   ],
   resolve: {
     extensions: ['.js', '.vue', '.css', '.json'],

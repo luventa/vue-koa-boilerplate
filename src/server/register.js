@@ -17,9 +17,6 @@ const staticroot = path.join(__dirname, '../static')
 configure(logconf)
 const logger = getLogger('server')
 
-logger.info(webroot)
-logger.info(staticroot)
-
 export default app => {
   logger.debug('Registering middlewares for app...')
 

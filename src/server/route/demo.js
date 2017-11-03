@@ -1,11 +1,12 @@
 import { koaRouter, getLogger } from '../util'
 import decipher from '../middleware/decipher'
-// import _ from 'lodash'
+import _ from 'lodash'
 
 const logger = getLogger('demo')
 const router = koaRouter({ prefix: '/api/demo' })
 
 router.post('/test', async ctx => {
+  logger.info('lodash', _)
   logger.info('in test api')
   return await ctx.success('FUCK YOU, WORLD!!')
 })

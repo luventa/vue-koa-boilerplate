@@ -4,11 +4,11 @@
   "description": "Vue & Koa isomorphic boilerplate",
   "author": "luventa <luventa@outlook.com>",
   "scripts": {
+    "analyze": "cross-env NODE_ENV=production node scripts/build.js --analyze",
     "start": "cross-env NODE_ENV=development node scripts/dev-server.js",
     "test": "cross-env NODE_ENV=testing node dist/myproject/server/main.js",
     "build": "rimraf dist && cross-env NODE_ENV=testing node scripts/build.js",
     "release": "rimraf dist && cross-env NODE_ENV=production node scripts/build.js",
-    "analyze": "node scripts/analyze.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
