@@ -14,7 +14,7 @@ module.exports = {
   dev: {
     port: 2333,
     noInfo: true,
-    autoOpenBrowser: true,
+    autoOpenBrowser: false,
     registerApi: true,
     hotApiRegex: /[\/\\](routes|utils|middlewares)[\/\\]/,
     proxyTable: proxyTable,

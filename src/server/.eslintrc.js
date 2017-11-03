@@ -12,10 +12,11 @@ module.exports = {
   ],
   // add your custom rules here
   'rules': {
-    "no-var": 1,
+    'no-var': 1,
     // allow paren-less arrow functions
     'arrow-parens': 0,
     // allow async-await
-    'generator-star-spacing': 0
+    'generator-star-spacing': 0,
+    'node/no-unsupported-features': 0
   }
 }

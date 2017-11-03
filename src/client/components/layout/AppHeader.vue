@@ -5,7 +5,7 @@
         <img src="/static/img/logo.png" alt="Vue Koa" />
       </router-link>
       <router-link to="/">Home</router-link>
-      <router-link to="/count">Count</router-link>
+      <router-link to="/httpDemo">Http</router-link>
     </div>
   </nav>
 </template>

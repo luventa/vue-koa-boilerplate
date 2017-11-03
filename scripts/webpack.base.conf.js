@@ -1,29 +1,18 @@
-const _ = require('lodash')
 const path = require('path')
 const webpack = require('webpack')
 const config = require('./config')
 const utils = require('./utils')
 
-const env = config.env[process.env.NODE_ENV]
-const srcRoots = process.env.isBuild
-  ? config.paths.client
-  : [ config.paths.client, config.paths.server ]
-
-module.exports = {
+const clientWebpackConfig = {
+  name: 'client',
   entry: {
     app: ['./src/client/index.js'],
-    vendor: [
-      'vue',
-      'vue-router',
-      'vuex',
-      'vuex-router-sync'
-    ]
+    vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
   },
   output: {
     path: config.paths.output,
     publicPath: config.paths.public,
     filename: '[name].js'
-    // chunkFilename: '[id].chunk.js'
   },
   // disable devtool for production env
   // '#source-map' is an alternative option for '#eval-source-map'
@@ -31,8 +20,7 @@ module.exports = {
   plugins: [
     // http://vuejs.github.io/vue-loader/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env.runtime,
-      'extconf': env.external
+      'process.env': config.env[process.env.NODE_ENV]
     })
   ],
   resolve: {
@@ -41,7 +29,8 @@ module.exports = {
       'vue$': 'vue/dist/vue.esm.js',
       '@': path.resolve('src/client'),
       '@store': path.resolve('src/client/store'),
-      '@comp': path.resolve('src/client/components')
+      '@comp': path.resolve('src/client/components'),
+      '@view': path.resolve('src/client/views')
     }
   },
   module: {
@@ -49,7 +38,7 @@ module.exports = {
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
-        include: srcRoots,
+        include: config.paths.client,
         exclude: /node_modules/,
         enforce: 'pre',
         options: {
@@ -64,7 +53,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: srcRoots,
+        include: config.paths.client,
         exclude: /node_modules/
       },
       {
@@ -88,4 +77,52 @@ module.exports = {
   performance: {
     hints: false
   }
+}
+
+const serverWebpackConfig = {
+  name: 'server',
+  devtool: 'cheap-source-map',
+  entry: [ './src/server/index.js' ],
+  output: {
+    path: config.paths.output,
+    publicPath:  config.paths.public,
+    filename: '[name].js'
+  },
+  target: 'node',
+  node: {
+    __dirname: true,
+    __filename: true
+  },
+  // module: {
+  //   loaders: [
+  //     {
+  //       test: /\.(js)$/,
+  //       loader: 'eslint-loader',
+  //       include: config.paths.server,
+  //       exclude: /node_modules/,
+  //       enforce: 'pre',
+  //       options: {
+  //         formatter: require('eslint-friendly-formatter')
+  //       }
+  //     },
+  //     {
+  //       test: /\.js$/,
+  //       loader: 'babel-loader',
+  //       include: config.paths.server,
+  //       exclude: /node_modules/
+  //     },
+  //     {
+  //       test: /\.json$/,
+  //       loader: 'json-loader'
+  //     }
+  //   ]
+  // },
+  resolve: {
+    extensions: ['.js', '.json']
+  }
+}
+
+module.exports = {
+  client: clientWebpackConfig,
+  server: serverWebpackConfig
 }

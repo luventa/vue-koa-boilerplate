@@ -1,17 +1,14 @@
-const runtime = {
+module.exports = {
   NODE_ENV: '"production"',
-  DEBUG: false
-}
-
-const external = {
-  axios: {
+  ROUTE_MODE: '"history"',
+  DEBUG: false,
+  API_CONF: {
     baseURL : '"/api"',
-    timeout: 120 * 1000,
-    withCredentials: true
+    timeout: 60 * 1000,
+    withCredentials: true,
+    headers: {
+      'x-request-token': '"unique-token"'
+    }
   }
 }
 
-module.exports = {
-  runtime,
-  external
-}

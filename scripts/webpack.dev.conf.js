@@ -7,11 +7,12 @@ const config = require('./config')
 const utils = require('./utils')
 
 // add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.entry).forEach(name => {
-  baseWebpackConfig.entry[name] = ['./scripts/dev-client'].concat(baseWebpackConfig.entry[name])
+Object.keys(baseWebpackConfig.client.entry).forEach(name => {
+  baseWebpackConfig.client.entry[name] = ['./scripts/dev-client'].concat(baseWebpackConfig.client.entry[name])
 })
 
-module.exports = merge(baseWebpackConfig, {
+const clientWebpackConfig = merge(baseWebpackConfig.client, {
+  name: 'client',
   module: {
     loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
@@ -34,3 +35,5 @@ module.exports = merge(baseWebpackConfig, {
     new FriendlyErrorsPlugin()
   ]
 })
+
+module.exports = [ clientWebpackConfig, baseWebpackConfig.server ]

@@ -8,16 +8,15 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const config = require('./config')
 const utils = require('./utils')
-const env = process.argv.slice(2) == '--debug' ? config.env.test : config.env.prod
-const nodeModules = {}
-fs.readdirSync('node_modules').filter((x) => {
-  return ['.bin'].indexOf(x) === -1
-}).forEach((mod) => {
-  nodeModules[mod] = 'commonjs ' + mod
-})
+const nodeModules = _externals()
 
-const clientWebpackConfig = merge(baseWebpackConfig, {
-  name: 'client',
+// fs.readdirSync('node_modules').filter((x) => {
+//   return ['.bin'].indexOf(x) === -1
+// }).forEach((mod) => {
+//   nodeModules[mod] = 'commonjs ' + mod
+// })
+
+const clientWebpackConfig = merge(baseWebpackConfig.client, {
   entry: {
     vendor: [
       'es6-promise',
@@ -37,10 +36,6 @@ const clientWebpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
-    // http://vuejs.github.io/vue-loader/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env': env
-    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
@@ -121,47 +116,28 @@ if (config.build.productionGzip) {
   )
 }
 
-const serverWebpackConfig = {
-  name: 'server',
-  devtool: 'cheap-source-map',
-  entry: [ './src/server/index.js' ],
+const serverWebpackConfig = merge(baseWebpackConfig.client, {
   output: {
     path: config.dists.server,
     filename: '[name].js',
     publicPath: '/build/'
   },
-  target: 'node',
-  node: {
-    __dirname: true,
-    __filename: true
-  },
-  externals: nodeModules,
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: config.paths.server,
-        exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.js', '.json']
-  },
+  // externals: nodeModules,
   plugins: [
-    new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
     })
   ]
+})
+
+function _externals() {
+  let manifest = require('../package.json')
+  let dependencies = manifest.dependencies
+  let externals = {}
+  for (let dep in dependencies) {
+    externals[dep] = 'commonjs ' + dep
+  }
+  return externals
 }
 
 module.exports = [ clientWebpackConfig, serverWebpackConfig ]

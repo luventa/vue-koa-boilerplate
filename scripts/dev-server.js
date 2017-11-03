@@ -6,9 +6,8 @@ require('babel-core/register')({
 
 // require dev modules
 const Koa = require('koa')
-const koaMount = require('koa-mount')
-const koaStatic = require('koa-static')
 const c2k = require('koa2-connect')
+const chalk = require('chalk')
 const path = require('path')
 const webpack = require('webpack')
 const opn = require('opn')
@@ -35,7 +34,7 @@ const devMiddleware = KWM.devMiddleware(compiler, {
     aggregateTimeout: 300,
     poll: false
   },
-  publicPath: webpackConfig.output.publicPath,
+  publicPath: config.paths.public,
   stats: {
     colors: true,
     chunks: false
@@ -65,12 +64,9 @@ app.use(c2k(chafMiddleware()))
 app.use(devMiddleware)
 app.use(hotMiddleware)
 
-// serve pure static assets
-app.use(koaMount('/static', koaStatic(config.paths.static)))
-
 // register server api
 if (config.dev.registerApi) {
-  console.log('> Registering server Api ')
+  console.log(chalk.yellow('> Registering server Api... \n'))
   const registerApi = require('../src/server/register').default
   const watcher = require('chokidar').watch(config.paths.server)
 
@@ -80,14 +76,14 @@ if (config.dev.registerApi) {
     watcher.on('all', (err, file) => {
       
       if (!config.dev.hotApiRegex.test(file)) {
-        console.log('> Rebooting server... ')
+        console.log(chalk.red('> Rebooting server... \n [Not implemented yet]'))
         // TBD
       } else {
-        console.log('> Reloading hot modules of server. ')
+        console.log(chalk.yellow('> Reloading hot modules of server... \n'))
         Object.keys(require.cache).forEach((id) => {
           if (config.dev.hotApiRegex.test(id)) delete require.cache[id]
         })
-        console.log('> Hot modules of server are reloaded. ')
+        console.log(chalk.green('> Hot modules of server are reloaded... \n'))
       }
     })
   })
@@ -97,12 +93,12 @@ if (config.dev.registerApi) {
 const uri = 'http://localhost:' + port
 
 devMiddleware.waitUntilValid(() => {
-  console.log(`> Listening at ${uri} \n`)
+  console.log(chalk.green(`> Listening at ${uri} \n`))
 })
 
 module.exports = app.listen(port, err => {
   if (err) {
-    console.log(err)
+    console.log(chalk.red(err))
     return
   }
 

@@ -1,10 +1,11 @@
+/* Layout */
+
 .container {
-  min-height: 100vh;
+  min-height: 90vh;
   margin: 0.75rem auto;
   position: relative;
   
   @include desktop {
-    
     max-width: $desktop - 40px; // 960px
   }
 
@@ -14,11 +15,28 @@
 }
 
 .footer {
-  background-color: $grey;
+  background-color: $grey-dark;
   padding: 3rem 1.5rem;
 }
 
 .view {
-  background-color: $white;
+  background-color: $grey-light;
+  padding: 0.75rem;
+}
+
+.section {
   padding: 3rem 1.5rem;
 }
+
+/* Button */
+$button: $grey-dark !default;
+$button-radius: $radius-small;
+
+.button {
+  color: $button;
+  border-radius: $button-radius;
+}
+
+/* Title */
+
+

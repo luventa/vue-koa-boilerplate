@@ -24,7 +24,7 @@ export default {
 @import "./style/index.scss";
 
 #app {
-  background-color: $white;
+  background-color: $grey-light;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

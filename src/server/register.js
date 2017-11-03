@@ -1,18 +1,21 @@
 import path from 'path'
 import koaStatic from 'koa-static'
+import koaMount from 'koa-mount'
 import koaViews from 'koa-views'
 import koaSession from 'koa-session'
-import log4js from 'log4js'
+import { configure, getLogger } from 'log4js'
+import logconf from './config/log'
 import sessionconf from './config/session'
 import { enrichResponse, enrichSession } from './middlewares/enrichment'
 import router from './routes'
-import logconf from './config/log'
 // import koaCors from 'koa2-cors'
 
-log4js.configure(logconf(process.env.NODE_ENV))
 const webroot = path.join(__dirname, '../../client')
 const staticroot = path.join(__dirname, '../static')
-const logger = log4js.getLogger('register')
+
+// configure log4js
+configure(logconf)
+const logger = getLogger('server')
 
 export default app => {
   logger.debug('Registering middlewares for app...')
@@ -21,7 +24,10 @@ export default app => {
   app.use(koaSession(sessionconf, app))
   // app.use(koaCors({ credentials: true }))
 
-  if (app.env === 'development') {
+  // serve pure static assets
+  app.use(koaMount('/static', koaStatic(staticroot)))
+
+  if (app.env !== 'development') {
     logger.info('Setting packed resources directory', webroot, 'for env', process.env.NODE_ENV)
     app.use(koaStatic(webroot))
     app.use(koaViews(webroot, { extentions: 'html' }))
@@ -42,15 +48,13 @@ export default app => {
 
   app.use(router)
 
-  // routers.forEach(router => {
-  //   app.use(router.routes(), router.allowedMethods())
-  // })
-
   app.use(async ctx => {
     if (!ctx.headerSent && app.env !== 'development') {
       await ctx.render('index.html')
     }
   })
 
-  logger.debug('Middlewares registering completed')
+  logger.debug('Middlewares registering completed\n')
+
+  return { app, logger }
 }
