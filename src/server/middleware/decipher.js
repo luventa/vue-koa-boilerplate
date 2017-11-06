@@ -1,4 +1,5 @@
-import { _, getLogger } from '../util'
+import _ from 'lodash'
+import { getLogger } from 'log4js'
 import { decrypt } from '../util/helper'
 
 const logger = getLogger('decipher')
@@ -15,7 +16,7 @@ export default async (ctx, next) => {
   }
 
   if (process.env.NODE_ENV !== 'production') {
-    logger.debug('Original request body:', _.toString(_.get(requestBody, 'origin')))
+    logger.debug('Original request body:', JSON.stringify(_.get(requestBody, 'origin')))
   }
 
   try {

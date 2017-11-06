@@ -27,14 +27,14 @@ export default {
   methods: {
     test1 () {
       console.log(this._get)
-      this.$http.post('/demo/test').then(res => {
+      this.$http.post('/trade/book').then(res => {
         this.response1 = res.data.rtnMsg
       }).catch(e => {
         this.$debug(e)
       })
     },
     test2 () {
-      this.$https.post('/demo/encTest', {
+      this.$https.post('/user/login', {
         test: 'hahaha'
       }).then(res => {
         this.response2 = res.data.content

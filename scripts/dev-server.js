@@ -39,7 +39,8 @@ const devMiddleware = KWM.devMiddleware(compiler, {
   }
 })
 
-const hotMiddleware = KWM.hotMiddleware(compiler)
+// only client need hot middleware
+const hotMiddleware = KWM.hotMiddleware(compiler.compilers.find(c => c.name === 'client'))
 // force page reload when html-webpack-plugin template changes
 // compiler.plugin('compilation', compilation => {
 //   compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
@@ -72,13 +73,14 @@ if (config.dev.registerApi) {
 
   watcher.on('ready', () => {
     watcher.on('all', (err, file) => {
+      console.log(file, config.dev.hotApiRegex.test(file))
       
       if (!config.dev.hotApiRegex.test(file)) {
         console.log(chalk.red('> Rebooting server... \n [Not implemented yet]'))
         // TBD
       } else {
         console.log(chalk.yellow('> Reloading hot modules of server... \n'))
-        Object.keys(require.cache).forEach((id) => {
+        Object.keys(require.cache).forEach(id => {
           if (config.dev.hotApiRegex.test(id)) delete require.cache[id]
         })
         console.log(chalk.green('> Hot modules of server are reloaded... \n'))

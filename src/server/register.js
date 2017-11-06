@@ -7,7 +7,7 @@ import { configure, getLogger } from 'log4js'
 import logconf from './config/log'
 import sessionconf from './config/session'
 import { enrichResponse, enrichSession } from './enrich'
-import { dynamicRoute, initRoutes} from './route'
+import routes from './route'
 // import koaCors from 'koa2-cors'
 
 const webroot = path.join(__dirname, '../client')
@@ -50,10 +50,9 @@ export default app => {
     }
   })
 
-  app.env === 'development' ? app.use(dynamicRoute) : initRoutes(app)
+  app.use(routes)
 
   app.use(async ctx => {
-    logger.info('herererere')
     if (!ctx.headerSent && app.env !== 'development') {
       await ctx.render('index.html')
     }

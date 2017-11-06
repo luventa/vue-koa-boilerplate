@@ -4,7 +4,6 @@
   "description": "Vue & Koa isomorphic boilerplate",
   "author": "luventa <luventa@outlook.com>",
   "scripts": {
-    "start": "cross-env NODE_ENV=testing node index.js"
   },
   "dependencies": {
     "koa": "^2.3.0",

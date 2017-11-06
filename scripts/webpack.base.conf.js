@@ -92,7 +92,7 @@ const clientWebpackConfig = {
 
 const serverWebpackConfig = {
   name: 'server',
-  devtool: 'cheap-source-map',
+  devtool: false,
   entry: [ './src/server/index.js' ],
   output: {
     path: config.paths.output,
@@ -108,7 +108,7 @@ const serverWebpackConfig = {
   module: {
     loaders: [
       {
-        test: /\.(js)$/,
+        test: /\.js$/,
         loader: 'eslint-loader',
         include: config.paths.server,
         exclude: /node_modules/,

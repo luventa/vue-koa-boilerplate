@@ -17,8 +17,8 @@ const blockDecrypt = block => {
   }
 }
 
-export const decrypt = async cipher => {
-  if (cipher) {
+export const decrypt = cipher => {
+  if (!cipher) {
     throw new Error('ciper cannot be null')
   }
 

@@ -110,7 +110,6 @@ if (config.build.productionGzip) {
 }
 
 const serverWebpackConfig = merge(baseWebpackConfig.server, {
-  devtool: false,
   output: {
     path: config.dists.server,
     filename: '[name].js',
