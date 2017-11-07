@@ -21,7 +21,6 @@ export const route = (path, method = 'get', middlewares = []) => {
     return {
       configurable: descriptor.configurable,
       enumerable: true,
-      writabl: false,
       get () {
         return {
           config: { path, method },

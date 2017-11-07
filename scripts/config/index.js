@@ -7,7 +7,7 @@ const distPath = path.resolve(`dist/${pm2Config.name}`)
 module.exports = {
   build: {
     index: path.resolve(distPath, 'index.html'),
-    includeModules: false,
+    includeModules: true,
     productionSourceMap: true,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css']

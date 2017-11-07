@@ -30,7 +30,7 @@ compiler.apply(new ProgressPlugin())
 
 compiler.run((err, stats) => {
   packServerFiles()
-  // spinner.stop()
+  spinner.stop()
   if (err) throw err
   process.stdout.write(stats.toString({
     colors: true,
@@ -51,13 +51,13 @@ const packServerFiles = () => {
   let pm2File = path.resolve(config.dists.server, 'pms2.json')
   let pkgFile = path.resolve(config.paths.server, 'package.json')
   fs.writeFileSync(pm2File, JSON.stringify(config.pm2, null, 2))
+  cp('-R', pkgFile, path.normalize(`${config.dists.server}/`))
   if (config.build.includeModules) {
     console.log(chalk.cyan('copying modules for server.'))
     mkdir('-p', config.dists.modules)
     copyModule(serverDeps)
+    cp('-R', path.resolve(config.paths.modules, '.bin'), config.dists.modules)
     console.log(chalk.cyan('server modules ready\n'))
-  } else {
-    cp('-R', pkgFile, path.normalize(`${config.dists.server}/`))
   }
 }
 

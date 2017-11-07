@@ -24,7 +24,7 @@ export default {
         if (process.env.NODE_ENV !== 'production') {
           request.data.origin = origin
         }
-      }
+      } 
 
       return request
     })

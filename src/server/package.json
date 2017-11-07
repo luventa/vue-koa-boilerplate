@@ -4,8 +4,10 @@
   "description": "Vue & Koa isomorphic boilerplate",
   "author": "luventa <luventa@outlook.com>",
   "scripts": {
+    "test": "cross-env NODE_ENV=testing node main.js"
   },
   "dependencies": {
+    "cross-env": "^5.0.5",
     "koa": "^2.3.0",
     "koa-body": "^2.4.0",
     "koa-mount": "^3.0.0",
