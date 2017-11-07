@@ -1,8 +1,10 @@
+const projectName = 'MyProject'
+
 module.exports = {
   // define your project name here. for package and deployment
-  name: 'MyProject',
-  script: './index.js',
-  cwd: './server',
+  name: projectName,
+  script: 'main.js',
+  cwd: `/var/www/${projectName}/server`,
   instances: '2',
   exec_mode: 'cluster',
   max_memory_restart: '1G',
