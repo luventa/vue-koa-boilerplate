@@ -1,12 +1,9 @@
-import Router from 'koa-router'
-import koaBody from 'koa-body'
-import decipher from '../middleware/decipher'
+import createRouter from './base'
 import UserController from '../controller/user'
 
-const router = new Router({ prefix: '/api/user' })
-router.use(koaBody())
-const userCtrl = new UserController()
-
-router.post('/login', decipher, userCtrl.login)
+const userRouterConf = {
+  controller: UserController,
+  useBody: true
+}
    
-export default router
+export default createRouter(userRouterConf)

@@ -4,14 +4,21 @@
 import _ from 'lodash'
 import { getLogger } from 'log4js'
 
+const setNativeProperty = (target, key, value) => {
+  Object.defineProperty(target, key, {
+    value: value,
+    enumerable: false,
+    configurable: true,
+    writable: false
+  })
+} 
+
 export default class BaseController {
   constructor (name) {
-    this.logger = getLogger(name)
-    this._ = _
+    setNativeProperty(this, 'logger', getLogger(name))
+    setNativeProperty(this, '_', _)
 
     // add shotcuts for lodash methods
-    Object.keys(_).forEach(key => {
-      this[`_${key}`] = _[key]
-    })
+    Object.keys(_).forEach(key => setNativeProperty(this, `_${key}`, _[key]))
   }
 }
