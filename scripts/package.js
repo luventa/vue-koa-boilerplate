@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
 const archiver = require('archiver')
-const config = require('./config')
+const config = require('../config')
 const moment = require('moment')
 
 try {

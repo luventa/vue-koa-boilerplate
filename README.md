@@ -33,6 +33,7 @@ npm run package
 - [x] Frontend hot-reload without refreshing webpage manually.
 - [x] Backend hot-reload without restarting NodeJs server.
 - [x] Decorator design pattern for router and controller implementation.
+- [x] RSA encrypt/decrypt has been implemented in both ends.
 - [x] Writing codes with ES6/ES7 and compile both frontend and backend for release.
 - [x] Pack the whole built project and external modules for deployment.
 

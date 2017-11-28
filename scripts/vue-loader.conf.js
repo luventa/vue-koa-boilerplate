@@ -1,7 +1,7 @@
 'use strict'
 
 const utils = require('./utils')
-const config = require('./config')
+const config = require('../config')
 
 module.exports = {
   loaders: utils.cssLoaders({

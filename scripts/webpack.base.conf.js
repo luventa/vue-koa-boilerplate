@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const config = require('./config')
+const config = require('../config')
 const utils = require('./utils')
 const externals = _externals()
 

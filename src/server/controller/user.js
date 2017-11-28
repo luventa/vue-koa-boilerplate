@@ -1,27 +1,29 @@
-import Controller from './base'
-import decipher from '../middleware/decipher'
-import { controller, route } from '../util/decorator'
+// import Controller from './base'
+// import decipher from '../middleware/decipher'
+// import { controller, route } from '../util/decorator'
+import { decorators } from '../deacon'
 
-@controller('/api/user')
-class UserController extends Controller {
+const { Controller, Post } = decorators
+
+@Controller('/api/user', true)
+class UserController {
   constructor () {
-    super('user')
   }
 
-  @route('/login', 'post', decipher)
-  async login (ctx) {
-    this.logger.info('user is about to login')
-    return await ctx.success('Logged in!' + this.test(), { content: ctx.request.body })
+  @Post('/login')
+  async login () {
+    console.log('Login process starts')
+    return await this.ctx.success('Logged in!' + this.test(), { content: this.ctx.request.body })
   }
 
-  @route('/register', 'post')
-  async register (ctx) {
-    this.logger.info('user is about to register')
-    return await ctx.success('Register in!', { content: ctx.request.body })
+  @Post('/register')
+  async register (context) {
+    console.log('Register process starts')
+    return await context.success('Register in!', { content: context.request.body })
   }
 
   test () {
-    this.logger.info('testing')
+    console.log('testing')
     return 'hahahaha'
   }
 }

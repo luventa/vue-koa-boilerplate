@@ -3,7 +3,7 @@ const merge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const baseWebpackConfig = require('./webpack.base.conf')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const config = require('./config')
+const config = require('../config')
 const utils = require('./utils')
 
 // add hot-reload related code to entry chunks

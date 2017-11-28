@@ -7,8 +7,9 @@ import { configure, getLogger } from 'log4js'
 import logconf from './config/log'
 import sessionconf from './config/session'
 import { enrichResponse, enrichSession } from './enrich'
-import routes from './route'
+// import routes from './route'
 // import koaCors from 'koa2-cors'
+import { decorateApp } from './deacon'
 
 const webroot = path.join(__dirname, '../client')
 const staticroot = path.join(__dirname, '../static')
@@ -50,7 +51,10 @@ export default app => {
     }
   })
 
-  app.use(routes)
+  // app.use(routes)
+  decorateApp(app, {
+    controllers: [__dirname + '/controller/*.js']
+  })
 
   app.use(async ctx => {
     if (!ctx.headerSent && app.env !== 'development') {

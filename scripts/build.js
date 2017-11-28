@@ -9,7 +9,7 @@ env.isBuild = true
 const ora = require('ora')
 const chalk = require('chalk')
 const webpack = require('webpack')
-const config = require('./config')
+const config = require('../config')
 const copyModules = require('./copy-modules')
 const webpackConfig = require('./webpack.build.conf')
 

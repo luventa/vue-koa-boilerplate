@@ -6,7 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const baseWebpackConfig = require('./webpack.base.conf')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-const config = require('./config')
+const config = require('../config')
 const utils = require('./utils')
 
 const clientWebpackConfig = merge(baseWebpackConfig.client, {
