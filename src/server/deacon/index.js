@@ -5,7 +5,7 @@ import Controller from './decorator/Controller'
 import Get from './decorator/Get'
 import Post from './decorator/Post'
 import KoaRouter from 'koa-router'
-import KoaBody from 'koa-body'
+// import KoaBody from 'koa-body'
 
 export const decorateApp = (app, config = {}) => {
   const router = new KoaRouter()
