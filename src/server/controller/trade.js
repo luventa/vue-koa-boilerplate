@@ -1,8 +1,6 @@
-import { decorators } from '../deacon'
+import { Controller, Post, Get } from '../deacon/decorator'
 
-const { Controller, Post, Get } = decorators
-
-@Controller('/api/trade', true)
+@Controller('/api/trade')
 class TradeController {
   constructor () {
   }

@@ -1,11 +1,6 @@
-// import Controller from './base'
-// import decipher from '../middleware/decipher'
-// import { controller, route } from '../util/decorator'
-import { decorators } from '../deacon'
+import { Controller, Post } from '../deacon/decorator'
 
-const { Controller, Post } = decorators
-
-@Controller('/api/user', true)
+@Controller('/api/user')
 class UserController {
   constructor () {
   }

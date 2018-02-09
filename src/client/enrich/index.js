@@ -9,16 +9,4 @@ export default Vue => {
   Vue.use(cookie)
   Vue.use(crypto)
   Vue.use(helper)
-
-  Vue.prototype.$debug = msg => {
-    if (process.env.NODE_ENV !== 'production') {
-      let logs = ['[DEBUG] -']
-      if (msg instanceof Array) {
-        logs.push(...msg)
-      } else {
-        logs.push(msg)
-      }
-      console.log(...logs)
-    }
-  }
 }

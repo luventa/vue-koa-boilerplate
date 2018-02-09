@@ -3,6 +3,7 @@
 ****************************************/
 
 import _ from 'lodash'
+import moment from 'moment'
 
 const lodashFn = {
   '_get': _.get,
@@ -16,6 +17,22 @@ export default {
 
     this.installed = true
 
-    Object.defineProperties(Vue.prototype, lodashFn)
+    moment.locale('zh-cn')
+
+    Object.defineProperties(Vue.prototype, Object.keys(lodashFn).forEach(key => {
+      return {
+        get () {
+          return lodashFn[key]
+        }
+      }
+    }))
+
+    Object.defineProperties(Vue.prototype, {
+      $moment: {
+        get () {
+          return moment
+        }
+      }
+    })
   }
 }

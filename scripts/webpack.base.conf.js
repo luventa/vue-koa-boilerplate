@@ -32,6 +32,7 @@ const clientWebpackConfig = {
     new webpack.DefinePlugin({
       'process.env': config.env[process.env.NODE_ENV]
     }),
+    // minimize moment
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/,/en|zh/)
   ],
   resolve: {
@@ -45,7 +46,7 @@ const clientWebpackConfig = {
     }
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',

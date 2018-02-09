@@ -8,6 +8,7 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const config = require('../config')
 const utils = require('./utils')
+const isDebug = process.env.NODE_ENV === 'testing'
 
 const clientWebpackConfig = merge(baseWebpackConfig.client, {
   entry: {
@@ -36,7 +37,9 @@ const clientWebpackConfig = merge(baseWebpackConfig.client, {
       'screw-ie8': true,
       sourceMap: true,
       compress: {
-        warnings: false
+        warnings: false,
+        drop_debugger: !isDebug,
+        drop_console: !isDebug
       },
       output: {
         comments: false

@@ -30,7 +30,7 @@ export default {
       this.$http.post('/trade/book').then(res => {
         this.response1 = res.data.rtnMsg
       }).catch(e => {
-        this.$debug(e)
+        console.error(e)
       })
     },
     test2 () {
@@ -39,7 +39,7 @@ export default {
       }).then(res => {
         this.response2 = res.data.content
       }).catch(e => {
-        this.$debug(e)
+        console.error(e)
       })
     }
   }
