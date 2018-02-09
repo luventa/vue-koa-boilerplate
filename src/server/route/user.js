@@ -1,9 +1,8 @@
-import createRouter from './base'
+import { createRoute } from '../util/deacon'
 import UserController from '../controller/user'
 
-const userRouterConf = {
-  controller: UserController,
-  useBody: true
-}
+const userRoute = createRoute({
+  controller: UserController
+})
    
-export default createRouter(userRouterConf)
+export default userRoute

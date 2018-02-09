@@ -19,10 +19,10 @@ export default {
 
     moment.locale('zh-cn')
 
-    Object.defineProperties(Vue.prototype, Object.keys(lodashFn).forEach(key => {
+    Object.defineProperties(Vue.prototype, _.mapValues(lodashFn, fn => {
       return {
         get () {
-          return lodashFn[key]
+          return fn
         }
       }
     }))

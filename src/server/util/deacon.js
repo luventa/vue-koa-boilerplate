@@ -49,7 +49,7 @@ const mergeRouteDefinition = (target, opts, handler, verb) => {
   if (_.isString(opts)) {
     opts = { route: opts }
   } else if (!_.isPlainObject(opts)) {
-    throw new SyntaxError('Router handler must be defined in @Controller' + descriptor.value)
+    throw new SyntaxError('Router handler must be defined in @Controller' + handler)
   }
   // TODO validate target, before and after.
   let clz = target.constructor
@@ -57,6 +57,7 @@ const mergeRouteDefinition = (target, opts, handler, verb) => {
   routes.push({
     verb: verb,
     path: opts.route,
+    useBody: _.defaultTo(opts.useBody, true),
     before: opts.before,
     handler: handler,
     after: opts.after
@@ -76,7 +77,7 @@ export const createRoute = opts => {
   _deacon_.routes.forEach(route => {
     let handlers = []
     route.before && handlers.push(...route.before)
-    (route.useBody || opts.useBody) && handlers.push(koaBody(route.bodyOpts))
+    route.useBody && handlers.push(koaBody(route.bodyOpts))
     handlers.push(route.handler.bind(instance))
     route.after && handlers.push(...route.after)
     router[route.verb](route.path, ...handlers)

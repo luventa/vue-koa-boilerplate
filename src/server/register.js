@@ -9,7 +9,6 @@ import sessionconf from './config/session'
 import { enrichResponse, enrichSession } from './enrich'
 // import routes from './route'
 // import koaCors from 'koa2-cors'
-import { decorateApp } from './deacon'
 
 const webroot = path.join(__dirname, '../client')
 const staticroot = path.join(__dirname, '../static')
@@ -51,10 +50,15 @@ export default app => {
     }
   })
 
-  // app.use(routes)
-  decorateApp(app, {
-    controllers: [__dirname + '/controller/*.js']
-  })
+  if (app.env === 'development') {
+    logger.debug('Initializing dynamic routes')
+    let dynamicRoute = require('./route/dynamic').default
+    app.use(dynamicRoute)
+  } else {
+    logger.debug('Initializing static routes')
+    let initStaticRoute = require('./route').default
+    initStaticRoute(app)
+  }
 
   app.use(async ctx => {
     if (!ctx.headerSent && app.env !== 'development') {

@@ -1,24 +1,20 @@
-import { Controller, Post, Get } from '../deacon/decorator'
+import BaseController from './base'
+import { Controller, Post, Get } from '../util/deacon'
 
 @Controller('/api/trade')
-class TradeController {
+class TradeController extends BaseController {
   constructor () {
+    super('trade')
   }
 
   @Post('/book')
   async bookTrade (ctx) {
-    console.log('Book a trade')
     return await ctx.success('Logged in!' + this.test(), { content: ctx.request.body })
   }
 
   @Get('/list')
-  async getTradeList (context) {
-    console.log('Register process starts')
-    return await context.success('Register in!', { content: context.request.body })
-  }
-
-  test () {
-    console.log('hahaha')
+  async getTradeList (ctx) {
+    return await ctx.success('Register in!', { content: ctx.request.body })
   }
 }
 

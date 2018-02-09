@@ -1,11 +1,8 @@
+import { createRoute } from '../util/deacon'
+import TradeController from '../controller/trade'
 
-import Router from 'koa-router'
-
-const router = new Router({ prefix: '/api/trade' })
-
-router.post('/book', async ctx => {
-  // logger.info('booking new trade')
-  return await ctx.success('New trade booked!')
+const tradeRoute = createRoute({
+  controller: TradeController,
 })
    
-export default router
+export default tradeRoute

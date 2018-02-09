@@ -1,25 +1,27 @@
-import { Controller, Post } from '../deacon/decorator'
+import BaseController from './base'
+import { Controller, Post } from '../util/deacon'
 
 @Controller('/api/user')
-class UserController {
+class UserController extends BaseController {
   constructor () {
+    super('user')
   }
 
   @Post('/login')
-  async login () {
-    console.log('Login process starts')
-    return await this.ctx.success('Logged in!' + this.test(), { content: this.ctx.request.body })
+  async login (ctx) {
+    this.logger.info('Login process starts')
+    this.logger.info('Ctx body:', ctx.request.body)
+    return await ctx.success('Logged in!', { content: ctx.request.body })
   }
 
   @Post('/register')
-  async register (context) {
-    console.log('Register process starts')
-    return await context.success('Register in!', { content: context.request.body })
+  async register (ctx) {
+    this.logger.info('Register process starts')
+    return await ctx.success('Register in!', { content: ctx.request.body })
   }
 
   test () {
-    console.log('testing')
-    return 'hahahaha'
+    this.logger.info('hahahaha, this is a test!')
   }
 }
 
