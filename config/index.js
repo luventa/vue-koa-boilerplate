@@ -7,6 +7,8 @@ const distPath = path.resolve(`dist/${pm2Config.name}`)
 module.exports = {
   build: {
     index: path.resolve(distPath, 'index.html'),
+    assetsSubDirectory: 'assets',
+    assetsPublicPath: '/',
     name: pm2Config.name,
     includeModules: true,
     productionSourceMap: true,
@@ -16,6 +18,8 @@ module.exports = {
   dev: {
     port: 2333,
     noInfo: true,
+    assetsSubDirectory: 'assets',
+    assetsPublicPath: '/',
     autoOpenBrowser: true,
     registerApi: true,
     hotApiRegex: /[\/\\](route|util|middleware|controller)[\/\\]/,
@@ -23,9 +27,7 @@ module.exports = {
     cssSourceMap: false
   },
   paths: {
-    public: '/',
     output: distPath,
-    assetSub: 'assets',
     bin: path.resolve(srcPath, 'bin'),
     client: path.resolve(srcPath, 'client'),
     server: path.resolve(srcPath, 'server'),
@@ -33,7 +35,6 @@ module.exports = {
     modules: path.resolve('node_modules')
   },
   dists: {
-    publicPath: '/',
     client: path.resolve(distPath, 'client'),
     server: path.resolve(distPath, 'server'),
     modules: path.resolve(distPath, 'server/node_modules')

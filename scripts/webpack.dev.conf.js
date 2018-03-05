@@ -13,6 +13,11 @@ Object.keys(baseWebpackConfig.client.entry).forEach(name => {
 
 const clientWebpackConfig = merge(baseWebpackConfig.client, {
   name: 'client',
+  output: {
+    path: config.paths.output,
+    publicPath: config.dev.assetsPublicPath,
+    filename: '[name].js'
+  },
   module: {
     loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },

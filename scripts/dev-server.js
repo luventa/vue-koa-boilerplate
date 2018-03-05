@@ -32,7 +32,7 @@ const devMiddleware = KWM.devMiddleware(compiler, {
     aggregateTimeout: 300,
     poll: false
   },
-  publicPath: config.paths.public,
+  publicPath: config.dev.assetsPublicPath,
   stats: {
     colors: true,
     chunks: false

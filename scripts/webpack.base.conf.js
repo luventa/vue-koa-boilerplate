@@ -19,11 +19,6 @@ const clientWebpackConfig = {
     app: ['./src/client/index.js'],
     vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
   },
-  output: {
-    path: config.paths.output,
-    publicPath: config.paths.public,
-    filename: '[name].js'
-  },
   // disable devtool for production env
   // '#source-map' is an alternative option for '#eval-source-map'
   devtool: process.env.NODE_ENV === 'production' ? false : '#eval-source-map',
@@ -97,7 +92,6 @@ const serverWebpackConfig = {
   entry: [ './src/server/index.js' ],
   output: {
     path: config.paths.output,
-    publicPath:  config.paths.public,
     filename: '[name].js'
   },
   target: 'node',

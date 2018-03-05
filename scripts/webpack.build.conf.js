@@ -25,7 +25,7 @@ const clientWebpackConfig = merge(baseWebpackConfig.client, {
   },
   output: {
     path: config.dists.client,
-    publicPath: config.dists.publicPath,
+    publicPath: config.build.assetsPublicPath,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
