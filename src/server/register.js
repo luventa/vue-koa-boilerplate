@@ -21,18 +21,18 @@ export default app => {
   logger.debug('Registering middlewares for app...')
 
   app.env = process.env.NODE_ENV || app.env
-
   logger.debug('Setting app env to', app.env)
 
+  logger.debug('Configuring app session')
   app.keys = ['this is a secret key hehe']
   app.use(koaSession(sessionconf, app))
   // app.use(koaCors({ credentials: true }))
 
-  // serve pure static assets
+  // serve static assets
   app.use(koaMount('/static', koaStatic(staticroot)))
 
   if (app.env !== 'development') {
-    logger.info('Setting packed resources directory', webroot, 'for env', process.env.NODE_ENV)
+    logger.info(`Setting packed resources directory ${webroot}, for env ${process.env.NODE_ENV}`)
     app.use(koaStatic(webroot))
     app.use(koaViews(webroot, { extentions: 'html' }))
   }
@@ -46,7 +46,7 @@ export default app => {
     } catch (e) {
       logger.error('Uncaught exception:', e)
       ctx.status = 400
-      ctx.body = '你特么发了个什么鬼东西给服务器'
+      return ctx.body = e
     }
   })
 
