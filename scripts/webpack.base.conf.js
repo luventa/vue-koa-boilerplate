@@ -23,7 +23,7 @@ module.exports = {
       '@view': path.resolve(config.source.client, 'views')
     },
     extensions: [ '.js', '.vue', '.json', '.css' ],
-    modules: [ config.source.modules ]
+    modules: [ path.resolve('node_modules') ]
   },
   module: {
     rules: [

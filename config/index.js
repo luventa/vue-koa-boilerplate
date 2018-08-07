@@ -32,15 +32,13 @@ module.exports = {
     bin: path.resolve('src/bin'),
     client: path.resolve('src/client'),
     server: path.resolve('src/server'),
-    static: path.resolve('src/static'),
-    modules: path.resolve('node_modules')
+    static: path.resolve('src/static')
   },
   output: {
     root: distRoot,
     client: path.resolve(distRoot, 'client'),
     server: path.resolve(distRoot, 'server'),
-    static: path.resolve(distRoot, 'static'),
-    modules: path.resolve(distRoot, 'server/node_modules')
+    static: path.resolve(distRoot, 'static')
   },
   env: {
     development: require('./dev.env'),
