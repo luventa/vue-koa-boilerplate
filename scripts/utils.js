@@ -1,11 +1,13 @@
 'use strict'
 
 const path = require('path')
+const chalk = require('chalk')
 const config = require('../config')
+const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 exports.assetsPath = _path => {
-  const assetsSubDirectory = process.env.NODE_ENV === 'development'
+  const assetsSubDirectory = config.isDev
     ? config.dev.assetsSubDirectory
     : config.build.assetsSubDirectory  
   return path.posix.join(assetsSubDirectory, _path)
@@ -63,4 +65,48 @@ exports.styleLoaders = options => {
     })
   }
   return output
+}
+
+// Print process log
+exports.procLog = (proc, data) => {
+  let spliter = new Array((20 - proc.length) + 1).join('-')
+  let log = chalk.yellow.bold(`${spliter} ${proc} Process ${spliter} \n\n`)
+
+  if (typeof data === 'object') {
+    data.toString({
+      colors: true,
+      modules: false,
+      children: false,
+      chunks: false,
+      chunkModules: false,
+      warnings: false,
+      excludeAssets: /(node_modules|static)/
+    }).split(/\r?\n/).forEach(line => {
+      log += `  ${line}\n`
+    })
+  } else {
+    log += `  ${data}\n`
+  }
+
+  log += chalk.yellow.bold(`\n${new Array(45).join('-')}\n`)
+
+  console.log(log)
+}
+
+// Pack source code with webpack
+exports.pack = config => {
+  return new Promise((resolve, reject) => {
+    webpack(config, (err, stats) => {
+      if (err) {
+        reject(err.stack || err)
+      } else if (stats.hasErrors()) {
+        reject(stats.toString({
+          chunks: false,
+          colors: true
+        }).split(/\r?\n/).join('\n'))
+      } else {
+        resolve(stats)
+      }
+    })
+  })
 }

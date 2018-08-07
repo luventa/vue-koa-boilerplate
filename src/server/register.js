@@ -36,7 +36,7 @@ export default app => {
     app.use(koaStatic(webroot))
     app.use(koaViews(webroot, { extentions: 'html' }))
   }
-  
+
   app.use(enrichResponse)
   app.use(enrichSession)
 
@@ -46,7 +46,7 @@ export default app => {
     } catch (e) {
       logger.error('Uncaught exception:', e)
       ctx.status = 400
-      return ctx.body = e
+      ctx.body = e
     }
   })
 

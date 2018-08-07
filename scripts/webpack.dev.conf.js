@@ -1,29 +1,30 @@
+'use strict'
+
+const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const baseWebpackConfig = require('./webpack.base.conf')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const config = require('../config')
+const baseConfig = require('./webpack.base.conf')
 const utils = require('./utils')
 
-// add hot-reload related code to entry chunks
-Object.keys(baseWebpackConfig.client.entry).forEach(name => {
-  baseWebpackConfig.client.entry[name] = ['./scripts/dev-client'].concat(baseWebpackConfig.client.entry[name])
+Object.keys(baseConfig.entry).forEach(name => {
+  baseConfig.entry[name] = ['./scripts/dev-client'].concat(baseConfig.entry[name])
 })
 
-const clientWebpackConfig = merge(baseWebpackConfig.client, {
-  name: 'client',
+module.exports = merge(baseConfig, {
   output: {
-    path: config.paths.output,
+    path: config.output.root,
     publicPath: config.dev.assetsPublicPath,
     filename: '[name].js'
   },
   module: {
-    loaders: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
     // extract vendor chunks for better caching
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -40,5 +41,3 @@ const clientWebpackConfig = merge(baseWebpackConfig.client, {
     new FriendlyErrorsPlugin()
   ]
 })
-
-module.exports = [ clientWebpackConfig, baseWebpackConfig.server ]

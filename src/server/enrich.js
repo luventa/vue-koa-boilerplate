@@ -15,14 +15,14 @@ const commonRes = (ctx, status) => {
       obj = msg
       msg = undefined
     }
-    
+
     (status < 0) ? (rtn.errMsg = msg || '请求失败') : (rtn.rtnMsg = msg || '请求成功')
 
     Object.assign(rtn, obj)
 
     logger.debug(`Response data for request ${ctx.path}:`, JSON.stringify(rtn))
 
-    return ctx.body = rtn
+    ctx.body = rtn
   }
 }
 
@@ -31,7 +31,7 @@ export const enrichResponse = async (ctx, next) => {
     !ctx.success && (ctx.success = commonRes(ctx, resCode.success))
     !ctx.error && (ctx.error = commonRes(ctx, resCode.fail))
   }
-  
+
   await next()
 }
 

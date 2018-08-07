@@ -9,12 +9,16 @@ class TradeController extends BaseController {
 
   @Post('/book')
   async bookTrade (ctx) {
-    return await ctx.success('Logged in!' + this.test(), { content: ctx.request.body })
+    return ctx.success('Logged in!' + this.test(), { content: ctx.request.body })
   }
 
   @Get('/list')
   async getTradeList (ctx) {
-    return await ctx.success('Register in!', { content: ctx.request.body })
+    return ctx.success('Register in!', { content: ctx.request.body })
+  }
+
+  test () {
+    this.logger.info('hahahaha, this is a test in trade.controller!')
   }
 }
 

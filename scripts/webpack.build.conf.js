@@ -1,33 +1,31 @@
-const fs = require('fs')
+'use strict'
+
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const baseWebpackConfig = require('./webpack.base.conf')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const config = require('../config')
+const baseConfig = require('./webpack.base.conf')
 const utils = require('./utils')
-const isDebug = process.env.NODE_ENV === 'testing'
 
-const clientWebpackConfig = merge(baseWebpackConfig.client, {
+const clientConfig = merge(baseConfig, {
   entry: {
-    vendor: [
-      'es6-promise',
-      'babel-polyfill'
-    ]
-  },
-  module: {
-    loaders: utils.styleLoaders({
-      sourceMap: config.build.productionSourceMap,
-      extract: true
-    })
+    // polyfill for IE and FireFox
+    vendor: [ 'es6-promise', 'babel-polyfill' ]
   },
   output: {
-    path: config.dists.client,
+    path: config.output.client,
     publicPath: config.build.assetsPublicPath,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+  },
+  module: {
+    rules: utils.styleLoaders({
+      sourceMap: config.build.productionSourceMap,
+      extract: true
+    })
   },
   plugins: [
     new webpack.LoaderOptionsPlugin({
@@ -38,14 +36,14 @@ const clientWebpackConfig = merge(baseWebpackConfig.client, {
       sourceMap: true,
       compress: {
         warnings: false,
-        drop_debugger: !isDebug,
-        drop_console: !isDebug
+        drop_debugger: config.isProd,
+        drop_console: config.isProd
       },
       output: {
         comments: false
       }
     }),
-    // extract css into its own file
+    // extract css into its own file. mini-css-extract-plugin only supports webpack 4, will update later.
     new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
     new OptimizeCSSPlugin({
       cssProcessorOptions: {
@@ -65,8 +63,7 @@ const clientWebpackConfig = merge(baseWebpackConfig.client, {
         removeComments: true,
         collapseWhitespace: true,
         removeAttributeQuotes: true
-        // more options:
-        // https://github.com/kangax/html-minifier#options-quick-reference
+        // more options: https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
@@ -97,7 +94,7 @@ const clientWebpackConfig = merge(baseWebpackConfig.client, {
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
-  clientWebpackConfig.plugins.push(
+  clientConfig.plugins.push(
     new CompressionWebpackPlugin({
       asset: '[path].gz[query]',
       algorithm: 'gzip',
@@ -112,17 +109,21 @@ if (config.build.productionGzip) {
   )
 }
 
-const serverWebpackConfig = merge(baseWebpackConfig.server, {
-  output: {
-    path: config.dists.server,
-    filename: '[name].js',
-    chunkFilename:'[chunkhash].js'
-  }
-})
+if (!config.build.nodeServerEnabled) {
+  const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+  clientConfig.plugins.push(
+    new CopyWebpackPlugin([{
+      from: config.source.static,
+      to: config.output.static,
+      ignore: ['.*']
+    }])
+  )
+}
 
 if (process.argv.slice(2) == '--analyze') {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-  clientWebpackConfig.plugins.push(new BundleAnalyzerPlugin())
+  clientConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
-module.exports = [ clientWebpackConfig, serverWebpackConfig ]
+module.exports = clientConfig

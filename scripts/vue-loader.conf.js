@@ -5,8 +5,8 @@ const config = require('../config')
 
 module.exports = {
   loaders: utils.cssLoaders({
-    sourceMap: process.env.isBuild ? config.build.productionSourceMap : config.dev.cssSourceMap,
-    extract: process.env.isBuild
+    sourceMap: config.isDev ? config.dev.cssSourceMap : config.build.productionSourceMap,
+    extract: !config.isDev
   }),
   postcss: [
     require('autoprefixer')({

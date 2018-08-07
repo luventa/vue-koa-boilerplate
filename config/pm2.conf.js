@@ -1,8 +1,10 @@
-const projectName = 'MyProject'
+const path = require('path')
+const projectName = path.basename(path.resolve())
 
 module.exports = {
-  // define your project name here. for package and deployment
-  name: projectName,
+  // Process Name for PM2 can be defined here.
+  name: 'MyProject',
+  project: projectName,
   script: 'main.js',
   cwd: `/var/www/${projectName}/server`,
   instances: '2',

@@ -1,51 +1,35 @@
+'use strict'
+
 const path = require('path')
-const webpack = require('webpack')
 const config = require('../config')
 const utils = require('./utils')
-const externals = _externals()
+const webpack = require('webpack')
 
-function _externals() {
-  let dependencies =  require('../src/server/package.json').dependencies
-  let externals = {}
-  for (let dep in dependencies) {
-    externals[dep] = 'commonjs ' + dep
-  }
-  return externals
-}
-
-const clientWebpackConfig = {
+module.exports = {
   name: 'client',
-  entry: {
-    app: ['./src/client/index.js'],
-    vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
-  },
   // disable devtool for production env
   // '#source-map' is an alternative option for '#eval-source-map'
-  devtool: process.env.NODE_ENV === 'production' ? false : '#eval-source-map',
-  plugins: [
-    // http://vuejs.github.io/vue-loader/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env': config.env[process.env.NODE_ENV]
-    }),
-    // minimize moment
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/,/en|zh/)
-  ],
+  devtool: config.isProd ? false : '#eval-source-map',
+  entry: {
+    app: [ './src/client/index.js' ],
+    vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
+  },
   resolve: {
-    extensions: ['.js', '.vue', '.css', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      '@': path.resolve('src/client'),
-      '@store': path.resolve('src/client/store'),
-      '@comp': path.resolve('src/client/components'),
-      '@view': path.resolve('src/client/views')
-    }
+      '@': config.source.client,
+      '@store': path.resolve(config.source.client, 'store'),
+      '@comp': path.resolve(config.source.client, 'components'),
+      '@view': path.resolve(config.source.client, 'views')
+    },
+    extensions: [ '.js', '.vue', '.json', '.css' ],
+    modules: [ config.source.modules ]
   },
   module: {
     rules: [
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
-        include: config.paths.client,
         exclude: /node_modules/,
         enforce: 'pre',
         options: {
@@ -60,7 +44,6 @@ const clientWebpackConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: config.paths.client,
         exclude: /node_modules/
       },
       {
@@ -69,6 +52,14 @@ const clientWebpackConfig = {
         query: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
       {
@@ -81,55 +72,14 @@ const clientWebpackConfig = {
       }
     ]
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': config.env[process.env.NODE_ENV]
+    }),
+    // minimize moment locales
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/,/en|zh/)
+  ],
   performance: {
     hints: false
   }
-}
-
-const serverWebpackConfig = {
-  name: 'server',
-  devtool: false,
-  entry: [ './src/server/index.js' ],
-  output: {
-    path: config.paths.output,
-    filename: '[name].js'
-  },
-  target: 'node',
-  node: {
-    __filename: false,
-    __dirname: false
-  },
-  externals: externals,
-  module: {
-    loaders: [
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        include: config.paths.server,
-        exclude: /node_modules/,
-        enforce: 'pre',
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: config.paths.server,
-        exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        loader: 'json-loader'
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.js', '.json']
-  }
-}
-
-module.exports = {
-  client: clientWebpackConfig,
-  server: serverWebpackConfig
 }

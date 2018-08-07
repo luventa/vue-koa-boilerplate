@@ -1,10 +1,16 @@
 {
+  "comments": false,
   "presets": [
     ["env", {
+      "modules": false,
       "targets": {
         "node": "current"
       }
-    }]
+    }],
+    "stage-2"
   ],
-  "plugins": [ "transform-decorators-legacy" ]
+  "plugins": [
+    "transform-runtime",
+    "transform-decorators-legacy"
+  ]
 }

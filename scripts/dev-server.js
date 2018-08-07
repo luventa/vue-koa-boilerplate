@@ -1,8 +1,6 @@
-require('./check-versions')()
-require('babel-polyfill')
-require('babel-core/register')()
+'use strict'
 
-// require dev modules
+require('./check-versions')()
 const Koa = require('koa')
 const c2k = require('koa2-connect')
 const chalk = require('chalk')
@@ -40,7 +38,7 @@ const devMiddleware = KWM.devMiddleware(compiler, {
 })
 
 // only client need hot middleware
-const hotMiddleware = KWM.hotMiddleware(compiler.compilers.find(c => c.name === 'client'))
+const hotMiddleware = KWM.hotMiddleware(compiler)
 // force page reload when html-webpack-plugin template changes
 // compiler.plugin('compilation', compilation => {
 //   compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
@@ -65,16 +63,23 @@ app.use(hotMiddleware)
 
 // register server api
 if (config.dev.registerApi) {
+  require('babel-polyfill')
+  require('babel-core/register')({
+    presets: [
+      ['env', {
+        targets: { node: 'current' }
+      }]
+    ]
+  })
+
   console.log(chalk.yellow('> Registering server Api... \n'))
   const registerApi = require('../src/server/register').default
-  const watcher = require('chokidar').watch(config.paths.server)
+  const watcher = require('chokidar').watch(config.source.server)
 
   registerApi(app)
 
   watcher.on('ready', () => {
-    watcher.on('all', (err, file) => {
-      console.log(file, config.dev.hotApiRegex.test(file))
-      
+    watcher.on('all', (err, file) => {      
       if (!config.dev.hotApiRegex.test(file)) {
         console.log(chalk.red('> Rebooting server... \n [Not implemented yet]'))
         // TBD

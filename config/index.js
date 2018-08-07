@@ -1,15 +1,16 @@
 const path = require('path')
 const proxyTable = require('./proxy.conf')
 const pm2Config = require('./pm2.conf')
-const srcPath = path.resolve('src')
-const distPath = path.resolve(`dist/${pm2Config.name}`)
+const distRoot = path.resolve(`dist/${pm2Config.project}`)
 
 module.exports = {
+  project: pm2Config.project,
+  isDev: process.env.NODE_ENV === 'development',
+  isProd: process.env.NODE_ENV === 'production',
   build: {
-    index: path.resolve(distPath, 'index.html'),
+    nodeServerEnabled: true,
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
-    name: pm2Config.name,
     includeModules: true,
     productionSourceMap: true,
     productionGzip: false,
@@ -26,18 +27,20 @@ module.exports = {
     proxyTable: proxyTable,
     cssSourceMap: false
   },
-  paths: {
-    output: distPath,
-    bin: path.resolve(srcPath, 'bin'),
-    client: path.resolve(srcPath, 'client'),
-    server: path.resolve(srcPath, 'server'),
-    static: path.resolve(srcPath, 'static'),
+  source: {
+    root: path.resolve('src'),
+    bin: path.resolve('src/bin'),
+    client: path.resolve('src/client'),
+    server: path.resolve('src/server'),
+    static: path.resolve('src/static'),
     modules: path.resolve('node_modules')
   },
-  dists: {
-    client: path.resolve(distPath, 'client'),
-    server: path.resolve(distPath, 'server'),
-    modules: path.resolve(distPath, 'server/node_modules')
+  output: {
+    root: distRoot,
+    client: path.resolve(distRoot, 'client'),
+    server: path.resolve(distRoot, 'server'),
+    static: path.resolve(distRoot, 'static'),
+    modules: path.resolve(distRoot, 'server/node_modules')
   },
   env: {
     development: require('./dev.env'),

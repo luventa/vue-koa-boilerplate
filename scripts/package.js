@@ -14,7 +14,7 @@ try {
 }
 
 // create write stream for archive
-const output = fs.createWriteStream(path.resolve(config.build.name + '_' + moment().format('Y-M-d') + '.zip'))
+const output = fs.createWriteStream(path.resolve(config.project + '_' + moment().format('Y-M-d') + '.zip'))
 const archive = archiver('zip', {
   zlib: { level: 9 }
 })
@@ -41,4 +41,4 @@ archive.on('error', err => {
 
 archive.pipe(output)
 
-archive.directory(config.paths.output, config.build.name).finalize()
+archive.directory(config.paths.output, config.project).finalize()

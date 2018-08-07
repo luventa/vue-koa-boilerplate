@@ -11,13 +11,13 @@ class UserController extends BaseController {
   async login (ctx) {
     this.logger.info('Login process starts')
     this.logger.info('Ctx body:', ctx.request.body)
-    return await ctx.success('Logged in!', { content: ctx.request.body })
+    return ctx.success('Logged in!', { content: ctx.request.body })
   }
 
   @Post('/register')
   async register (ctx) {
     this.logger.info('Register process starts')
-    return await ctx.success('Register in!', { content: ctx.request.body })
+    return ctx.success('Register in!', { content: ctx.request.body })
   }
 
   test () {
