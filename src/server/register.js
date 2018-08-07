@@ -10,6 +10,7 @@ import { enrichResponse, enrichSession } from './enrich'
 // import routes from './route'
 // import koaCors from 'koa2-cors'
 
+const dllroot = path.join(__dirname, '../dll')
 const webroot = path.join(__dirname, '../client')
 const staticroot = path.join(__dirname, '../static')
 
@@ -29,6 +30,7 @@ export default app => {
   // app.use(koaCors({ credentials: true }))
 
   // serve static assets
+  app.use(koaMount('/dll', koaStatic(dllroot)))
   app.use(koaMount('/static', koaStatic(staticroot)))
 
   if (app.env !== 'development') {

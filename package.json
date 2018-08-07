@@ -7,8 +7,9 @@
     "analyze": "cross-env NODE_ENV=production node scripts/build.js --analyze",
     "start": "cross-env NODE_ENV=development node scripts/dev-server.js",
     "test": "cross-env NODE_ENV=testing node dist/myproject/server/main.js",
-    "build:debug": "rimraf dist && cross-env NODE_ENV=testing node scripts/build.js",
-    "build": "rimraf dist && cross-env NODE_ENV=production node scripts/build.js",
+    "dll": "rimraf src/dll && webpack --config ./scripts/webpack.dll.conf.js",
+    "build:debug": "cross-env NODE_ENV=testing node scripts/build.js",
+    "build": "cross-env NODE_ENV=production node scripts/build.js",
     "package": "node scripts/package && rimraf dist"
   },
   "dependencies": {

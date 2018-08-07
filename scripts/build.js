@@ -1,8 +1,7 @@
 'use strict'
 
-const chalk = require('chalk')
-const del = require('del')
 const fs = require('fs')
+const del = require('del')
 const path = require('path')
 const { spawn } = require('child_process')
 const Multispinner = require('multispinner')
@@ -10,6 +9,15 @@ const config = require('../config')
 const clientConfig = require('./webpack.build.conf')
 const serverConfig = require('./webpack.server.conf')
 const utils = require('./utils')
+
+// Check if dll exists
+try {
+  fs.statSync(path.join(__dirname, '../src/dll'))
+} catch (e) {
+  console.log(e)
+  console.log('\n  Please execute `npm run dll` first!')
+  process.exit(0)
+}
 
 const results = Array.apply(null)
 const tasks = config.build.nodeServerEnabled ? ['client', 'server'] : ['client']

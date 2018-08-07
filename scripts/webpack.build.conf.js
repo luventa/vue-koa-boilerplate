@@ -11,10 +11,11 @@ const baseConfig = require('./webpack.base.conf')
 const utils = require('./utils')
 
 const clientConfig = merge(baseConfig, {
+  /******* uncomment this plugin if dll is not in use. *******
   entry: {
-    // polyfill for IE and FireFox
     vendor: [ 'es6-promise', 'babel-polyfill' ]
   },
+   ******* uncomment this plugin if dll is not in use. *******/
   output: {
     path: config.output.client,
     publicPath: config.build.assetsPublicPath,
@@ -67,7 +68,9 @@ const clientConfig = merge(baseConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
-    }),
+    })
+
+    /******* uncomment this plugin if dll is not in use. *******
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -88,6 +91,7 @@ const clientConfig = merge(baseConfig, {
       name: 'manifest',
       chunks: ['vendor']
     })
+     ******* uncomment this plugin if dll is not in use. *******/
   ]
 })
 
@@ -113,11 +117,17 @@ if (!config.build.nodeServerEnabled) {
   const CopyWebpackPlugin = require('copy-webpack-plugin')
 
   clientConfig.plugins.push(
-    new CopyWebpackPlugin([{
-      from: config.source.static,
-      to: config.output.static,
-      ignore: ['.*']
-    }])
+    new CopyWebpackPlugin([
+      {
+        from: config.source.static,
+        to: config.output.static,
+        ignore: ['.*', '*.html', '*.ico']
+      },
+      {
+        from: config.source.dll,
+        to: config.output.dll
+      }
+    ])
   )
 }
 

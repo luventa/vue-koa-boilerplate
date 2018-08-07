@@ -4,6 +4,7 @@ const path = require('path')
 const config = require('../config')
 const utils = require('./utils')
 const webpack = require('webpack')
+const DllReferencePlugin = require('webpack/lib/DllReferencePlugin')
 
 module.exports = {
   name: 'client',
@@ -11,9 +12,10 @@ module.exports = {
   // '#source-map' is an alternative option for '#eval-source-map'
   devtool: config.isProd ? false : '#eval-source-map',
   entry: {
-    app: [ './src/client/index.js' ],
-    vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
+    app: [ './src/client/index.js' ]
+    // vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
   },
+  externals: Object.keys(config.dependencies).filter(dep => dep != 'vue'),
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
@@ -75,6 +77,14 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': config.env[process.env.NODE_ENV]
+    }),
+    new DllReferencePlugin({
+      context: __dirname,
+      manifest:require('../src/dll/vendor.manifest.json')
+    }),
+    new DllReferencePlugin({
+      context: __dirname,
+      manifest:require('../src/dll/polyfill.manifest.json')
     }),
     // minimize moment locales
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/,/en|zh/)

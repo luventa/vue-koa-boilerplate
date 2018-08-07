@@ -76,8 +76,16 @@ module.exports = {
     new CopyWebpackPlugin([
       {
         from: config.source.static,
-        to: config.output.static,
-        ignore: ['.*']
+        to: config.output.static
+      },
+      {
+        from: config.source.dll,
+        to: config.output.dll,
+        ignore: [ '*.manifest.json' ]
+      },
+      {
+        from: config.source.bin,
+        to: config.output.bin
       },
       {
         from: path.resolve(config.source.server, 'package.json'),

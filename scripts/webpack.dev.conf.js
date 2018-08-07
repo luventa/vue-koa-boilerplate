@@ -25,11 +25,12 @@ module.exports = merge(baseConfig, {
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    // extract vendor chunks for better caching
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor.js'
-    }),
+    // extract vendor chunks for better caching.
+    // uncomment this plugin if dll is not in use.
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor',
+    //   filename: 'vendor.js'
+    // }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       title: '[DEV] Vue Koa Boilerplate',

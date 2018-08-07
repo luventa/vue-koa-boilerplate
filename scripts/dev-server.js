@@ -62,7 +62,14 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // register server api
-if (config.dev.registerApi) {
+if (!config.dev.nodeServerEnabled) {
+  const koaStatic = require('koa-static')
+  const koaMount = require('koa-mount')
+
+  app.use(koaMount('/dll', koaStatic(config.source.dll)))
+  app.use(koaMount('/static', koaStatic(config.source.static)))
+
+} else {
   require('babel-polyfill')
   require('babel-core/register')({
     presets: [
