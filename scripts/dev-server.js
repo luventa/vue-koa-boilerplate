@@ -39,13 +39,6 @@ const devMiddleware = KWM.devMiddleware(compiler, {
 
 // only client need hot middleware
 const hotMiddleware = KWM.hotMiddleware(compiler)
-// force page reload when html-webpack-plugin template changes
-// compiler.plugin('compilation', compilation => {
-//   compilation.plugin('html-webpack-plugin-after-emit', (data, cb) => {
-//     hotMiddleware.publish({ action: 'reload' })
-//     cb()
-//   })
-// })
 
 // proxy api requests
 Object.keys(proxyTable).forEach(context => {
@@ -62,7 +55,7 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // register server api
-if (!config.dev.nodeServerEnabled) {
+if (!config.build.nodeServerEnabled) {
   const koaStatic = require('koa-static')
   const koaMount = require('koa-mount')
 

@@ -10,6 +10,10 @@ const clientConfig = require('./webpack.build.conf')
 const serverConfig = require('./webpack.server.conf')
 const utils = require('./utils')
 
+// Clean dist
+del.sync(['dist/*', '!.gitkeep'])
+
+// Setup tasks and spinners
 const results = Array.apply(null)
 const tasks = !process.env.TASK
             ? (!config.build.nodeServerEnabled ? ['client'] : ['client', 'server'])
@@ -19,16 +23,17 @@ const spinners = new Multispinner(tasks, {
   postText: 'process'
 })
 
-del.sync(['dist/*', 'build/*', '!.gitkeep'])
-
 spinners.on('success', () => {
   process.stdout.write('\x1B[2J\x1B[0f\n\n')
   results.forEach(result => utils.procLog(result.proc, result.stats))
   console.log(`> Webpack packing process completed`)
   console.log(`> Start to build application`)
-  process.exit()
+  if (process.env.MODE !== 'analyze') {
+    process.exit()
+  }
 })
 
+// Compile client code
 if (tasks.indexOf('client') > -1) {
   utils.pack(clientConfig).then(stats => {
     results.push({ proc: 'Client', stats })
@@ -41,6 +46,7 @@ if (tasks.indexOf('client') > -1) {
   })
 }
 
+// Compile server code
 if (tasks.indexOf('server') > -1) {
   utils.pack(serverConfig).then(stats => {
     results.push({ proc: 'Server', stats })

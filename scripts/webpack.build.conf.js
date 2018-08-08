@@ -100,7 +100,7 @@ if (!config.build.nodeServerEnabled) {
   )
 }
 
-if (process.argv.slice(2) == '--analyze') {
+if (process.env.MODE === 'analyze') {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   clientConfig.plugins.push(new BundleAnalyzerPlugin())
 }

@@ -3,11 +3,16 @@
 const path = require('path')
 const webpack = require('webpack')
 const DllPlugin = require('webpack/lib/DllPlugin')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const config = require('../config')
 
 module.exports = {
   entry: {
-    vendor: Object.keys(config.dependencies).filter(dep => dep != 'vue'),//.map(dep => dep === 'vue' ? 'vue/dist/vue.esm.js' : dep),
+    vendor: [
+      'buffer',
+      'crypto', 
+      ...Object.keys(config.dependencies).map(dep => dep === 'vue' ? 'vue/dist/vue.esm.js' : dep)
+    ],
     polyfill: [ 'es6-promise', 'babel-polyfill' ]
   },
   output: {
@@ -17,7 +22,23 @@ module.exports = {
   },
   plugins:[
     new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false }
+      compress: {
+        warnings: false,
+        drop_debugger: true,
+        drop_console: true
+      },
+      output: { comments: false }
+    }),
+    new CompressionWebpackPlugin({
+      asset: '[path].gz[query]',
+      algorithm: 'gzip',
+      test: new RegExp(
+        '\\.(' +
+        config.build.productionGzipExtensions.join('|') +
+        ')$'
+      ),
+      threshold: 10240,
+      minRatio: 0.8
     }),
     new DllPlugin({
       path: path.join(config.source.dll, '[name].manifest.json'),

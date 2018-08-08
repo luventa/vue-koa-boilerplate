@@ -14,7 +14,6 @@ module.exports = {
   entry: {
     app: [ './src/client/index.js' ]
   },
-  externals: Object.keys(config.dependencies),
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',

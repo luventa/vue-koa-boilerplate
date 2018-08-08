@@ -25,13 +25,13 @@ export default {
   },
 
   methods: {
-    test1 () {
-      console.log(this._get)
-      this.$http.post('/trade/book').then(res => {
+    async test1 () {
+      try {
+        let res = await this.$http.post('/trade/book', { test: 'xixixi' })
         this.response1 = res.data.rtnMsg
-      }).catch(e => {
+      } catch (e) {
         console.error(e)
-      })
+      }
     },
     test2 () {
       this.$https.post('/user/login', {
