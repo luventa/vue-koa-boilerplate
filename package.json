@@ -4,13 +4,18 @@
   "description": "Vue & Koa isomorphic boilerplate",
   "author": "luventa <luventa@outlook.com>",
   "scripts": {
-    "analyze": "cross-env NODE_ENV=production node scripts/build.js --analyze",
+    "analyze": "cross-env NODE_ENV=production MODE=analyze node scripts/build.js --analyze",
+    "clean": "rimraf dist",
+    "clean:dll": "rimraf src/dll",
+    "dll": "npm run clean:dll && webpack --config ./scripts/webpack.dll.conf.js",
+    "build": "cross-env NODE_ENV=testing node scripts/build.js",
+    "build:client": "cross-env NODE_ENV=testing TASK=client node scripts/build.js",
+    "build:server": "cross-env NODE_ENV=testing TASK=server node scripts/build.js",
+    "dist": "cross-env NODE_ENV=production node scripts/build.js",
+    "dist:client:": "cross-env NODE_ENV=production TASK=client node scripts/build.js",
+    "dist:server:": "cross-env NODE_ENV=production TASK=server node scripts/build.js",
     "start": "cross-env NODE_ENV=development node scripts/dev-server.js",
-    "test": "cross-env NODE_ENV=testing node dist/myproject/server/main.js",
-    "dll": "rimraf src/dll && webpack --config ./scripts/webpack.dll.conf.js",
-    "build:debug": "cross-env NODE_ENV=testing node scripts/build.js",
-    "build": "cross-env NODE_ENV=production node scripts/build.js",
-    "package": "node scripts/package && rimraf dist"
+    "package": "node scripts/package && npm run clean"
   },
   "dependencies": {
     "axios": "^0.18.0",

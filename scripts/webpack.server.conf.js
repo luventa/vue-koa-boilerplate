@@ -75,17 +75,10 @@ module.exports = {
     // copy static resources
     new CopyWebpackPlugin([
       {
-        from: config.source.static,
-        to: config.output.static
-      },
-      {
-        from: config.source.dll,
-        to: config.output.dll,
-        ignore: [ '*.manifest.json' ]
-      },
-      {
-        from: config.source.bin,
-        to: config.output.bin
+        from: '+(bin|dll|static)/**',
+        to: config.output.root,
+        context: config.source.root,
+        ignore: ['.*', '*.html', '*.ico', '*.manifest.json']
       },
       {
         from: path.resolve(config.source.server, 'package.json'),

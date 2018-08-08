@@ -13,9 +13,8 @@ module.exports = {
   devtool: config.isProd ? false : '#eval-source-map',
   entry: {
     app: [ './src/client/index.js' ]
-    // vendor: [ 'vue', 'vue-router', 'vuex', 'vuex-router-sync' ]
   },
-  externals: Object.keys(config.dependencies).filter(dep => dep != 'vue'),
+  externals: Object.keys(config.dependencies),
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',

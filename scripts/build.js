@@ -10,17 +10,10 @@ const clientConfig = require('./webpack.build.conf')
 const serverConfig = require('./webpack.server.conf')
 const utils = require('./utils')
 
-// Check if dll exists
-try {
-  fs.statSync(path.join(__dirname, '../src/dll'))
-} catch (e) {
-  console.log(e)
-  console.log('\n  Please execute `npm run dll` first!')
-  process.exit(0)
-}
-
 const results = Array.apply(null)
-const tasks = config.build.nodeServerEnabled ? ['client', 'server'] : ['client']
+const tasks = !process.env.TASK
+            ? (!config.build.nodeServerEnabled ? ['client'] : ['client', 'server'])
+            : [ process.env.TASK ] 
 const spinners = new Multispinner(tasks, {
   preText: 'packing',
   postText: 'process'
@@ -36,17 +29,19 @@ spinners.on('success', () => {
   process.exit()
 })
 
-utils.pack(clientConfig).then(stats => {
-  results.push({ proc: 'Client', stats })
-  spinners.success('client')
-}).catch(err => {
-  spinners.error('client')
-  console.log(`\n  Error: failed to pack client code`)
-  console.error(`\n${err}\n`)
-  process.exit(1)
-})
+if (tasks.indexOf('client') > -1) {
+  utils.pack(clientConfig).then(stats => {
+    results.push({ proc: 'Client', stats })
+    spinners.success('client')
+  }).catch(err => {
+    spinners.error('client')
+    console.log(`\n  Error: failed to pack client code`)
+    console.error(`\n${err}\n`)
+    process.exit(1)
+  })
+}
 
-if (config.build.nodeServerEnabled) {
+if (tasks.indexOf('server') > -1) {
   utils.pack(serverConfig).then(stats => {
     results.push({ proc: 'Server', stats })
     // setup pm2.json file for server.

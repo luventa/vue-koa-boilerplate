@@ -11,11 +11,6 @@ const baseConfig = require('./webpack.base.conf')
 const utils = require('./utils')
 
 const clientConfig = merge(baseConfig, {
-  /******* uncomment this plugin if dll is not in use. *******
-  entry: {
-    vendor: [ 'es6-promise', 'babel-polyfill' ]
-  },
-   ******* uncomment this plugin if dll is not in use. *******/
   output: {
     path: config.output.client,
     publicPath: config.build.assetsPublicPath,
@@ -69,29 +64,6 @@ const clientConfig = merge(baseConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     })
-
-    /******* uncomment this plugin if dll is not in use. *******
-    // split vendor js into its own file
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks (module, count) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
-    }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
-    })
-     ******* uncomment this plugin if dll is not in use. *******/
   ]
 })
 
@@ -119,13 +91,10 @@ if (!config.build.nodeServerEnabled) {
   clientConfig.plugins.push(
     new CopyWebpackPlugin([
       {
-        from: config.source.static,
-        to: config.output.static,
+        from: '+(dll|static)/**',
+        to: config.output.root,
+        context: config.source.root,
         ignore: ['.*', '*.html', '*.ico']
-      },
-      {
-        from: config.source.dll,
-        to: config.output.dll
       }
     ])
   )

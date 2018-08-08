@@ -80,7 +80,7 @@ exports.procLog = (proc, data) => {
       chunks: false,
       chunkModules: false,
       warnings: false,
-      excludeAssets: /(node_modules|static)/
+      excludeAssets: /(node_modules|static|dll|bin)/
     }).split(/\r?\n/).forEach(line => {
       log += `  ${line}\n`
     })
