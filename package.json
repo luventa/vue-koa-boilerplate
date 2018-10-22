@@ -15,7 +15,8 @@
     "dist:client": "cross-env NODE_ENV=production TASK=client node scripts/build.js",
     "dist:server": "cross-env NODE_ENV=production TASK=server node scripts/build.js",
     "start": "cross-env NODE_ENV=development node scripts/dev-server.js",
-    "package": "node scripts/package && npm run clean"
+    "package": "node scripts/package && npm run clean",
+    "postinstall": "npm run dll"
   },
   "dependencies": {
     "axios": "^0.18.0",
